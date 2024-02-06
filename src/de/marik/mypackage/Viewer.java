@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static Viewer viewer;
-	private final static String version = "0.1";
+	private final static String version = "0.2";
 	private JLabel comment;
 	private JLabel taskText;
 	private JButton exitButton;
