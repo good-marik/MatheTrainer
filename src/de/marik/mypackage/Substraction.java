@@ -23,7 +23,7 @@ public class Substraction extends Operation {
 
 	@Override
 	public String getTaskString() {
-		taskString = randomA + " - " + randomB + " = ";
+		taskString = randomA + " – " + randomB + " = ";
 		return taskString;
 	}
 

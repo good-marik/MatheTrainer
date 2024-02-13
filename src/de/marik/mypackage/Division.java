@@ -25,7 +25,7 @@ public class Division extends Operation {
 
 	@Override
 	public String getTaskString() {
-		taskString = multiplication + " / " + randomA + " = ";
+		taskString = multiplication + " : " + randomA + " = ";
 		return taskString;
 	}
 

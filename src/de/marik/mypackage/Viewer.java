@@ -20,9 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Viewer extends JFrame {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4225066973345513036L;
+	private final static String version = "0.4";
+	private final static String programTitle = "MatheTrainer für Alexandra v" + version;
+	private final static String startingMessage = "Let's go!";
 	private static Viewer viewer;
-	private final static String version = "0.3";
 	private JLabel comment;
 	private JLabel taskText;
 	private JButton exitButton;
@@ -36,42 +38,41 @@ public class Viewer extends JFrame {
 	private JPanel multiPanel;
 
 	private Viewer() {
-		super("MatheTrainer für Alexandra v" + version);
+		super(programTitle);
 		commentsDatabase = new PrimitiveCommentsDatabase();
 		loadCommentsFromDatabase();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBackground(Color.RED);
-		Dimension dim = new Dimension(500, 300);
-		setMinimumSize(dim);
-//		setSize(dim);
-//		setPreferredSize(dim);
 		cardLayout = new CardLayout();
 		multiPanel = new JPanel(cardLayout);
 		multiPanel.add(getMenuPanel());
 		multiPanel.add(getGamePanel());
 		add(multiPanel);
-		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Dimension dim = new Dimension(500, 300);
+		setMinimumSize(dim);
+//		setSize(dim);
+//		setPreferredSize(dim);
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
 	private JPanel getMenuPanel() {
 		GridBagLayout gbl = new GridBagLayout();
 		JPanel menuPanel = new JPanel(gbl);
+
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(5, 5, 5, 5);
+		GridBagConstraints gbcSpecial = new GridBagConstraints();
+		gbcSpecial.insets = new Insets(25, 5, 5, 5);
 
 		JButton multiplicationButton = new JButton("Mutliplizieren *");
 		JButton additionButton = new JButton("Addieren +");
-		JButton divisionButton = new JButton("Dividieren /");
-		JButton substractionButton = new JButton("Substrahieren -");
+		JButton divisionButton = new JButton("Dividieren :");
+		JButton substractionButton = new JButton("Substrahieren –");
 		JButton exitButton = new JButton("Program Beenden");
 		exitButton.setForeground(new Color(0, 0, 153));
-
-//		gbc.insets.bottom = 30;
-//		gbl.setConstraints(exitButton, gbc);
 
 		ActionListener menuListener = new ActionListener() {
 			@Override
@@ -109,30 +110,28 @@ public class Viewer extends JFrame {
 		menuPanel.add(additionButton, gbc);
 		menuPanel.add(divisionButton, gbc);
 		menuPanel.add(substractionButton, gbc);
-		menuPanel.add(exitButton, gbc);
+		menuPanel.add(exitButton, gbcSpecial);
 
 		return menuPanel;
 	}
 
 	private JPanel getGamePanel() {
-		JPanel gamePanel = new JPanel();
-		gamePanel.setLayout(new GridLayout(3, 1));
-//		mainPanel.setBackground(Color.YELLOW);
-
-		comment = new JLabel("Let's go!");
-		comment.setHorizontalAlignment(JLabel.CENTER);
+		JPanel gamePanel = new JPanel(new GridLayout(3, 1));
+		comment = new JLabel();
 		comment.setFont(new Font("arial", Font.BOLD, 28));
-		comment.setForeground(Color.BLUE);
+		comment.setHorizontalAlignment(JLabel.CENTER);
+		setDefaultComment();
 		gamePanel.add(comment);
 
 		Font mainFont = new Font("arial", Font.PLAIN, 28);
-		taskText = new JLabel("---");
+		taskText = new JLabel();
 //		taskText.setHorizontalAlignment(JLabel.CENTER);
 		taskText.setFont(mainFont);
 		answerField = new JTextField(3);
 		answerField.setFont(mainFont);
 		JLabel spacer = new JLabel(" ");
 		spacer.setFont(mainFont);
+		
 		doneButton = new JButton("eingabe");
 		doneButton.addActionListener(new ActionListener() {
 			@Override
@@ -150,12 +149,14 @@ public class Viewer extends JFrame {
 			}
 		});
 		getRootPane().setDefaultButton(doneButton);
+		
 		JPanel middlePanel = new JPanel(new GridBagLayout());
-//		GridBagConstraints gbc = new GridBagConstraints();
-		middlePanel.add(taskText);
-		middlePanel.add(answerField);
-		middlePanel.add(spacer);
-		middlePanel.add(doneButton);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(0, 5, 0, 5);  // spaces (inserts) from left and right only
+		middlePanel.add(taskText, gbc);
+		middlePanel.add(answerField, gbc);
+		middlePanel.add(spacer, gbc);
+		middlePanel.add(doneButton, gbc);
 		gamePanel.add(middlePanel);
 
 		exitButton = new JButton("beenden");
@@ -170,11 +171,17 @@ public class Viewer extends JFrame {
 //		exitButton.setMaximumSize(new Dimension(55, 100));
 //		exitButton.setPreferredSize(new Dimension(55, 100));
 		JPanel bottomPanel = new JPanel(new GridBagLayout());
-		bottomPanel.add(exitButton, new GridBagConstraints());
+		bottomPanel.add(exitButton);
 		gamePanel.add(bottomPanel);
+		
 		return gamePanel;
 	}
 
+	private void setDefaultComment() {
+		comment.setForeground(Color.BLUE);
+		comment.setText(startingMessage);
+	}
+	
 	private void loadCommentsFromDatabase() {
 		positiveFeedbackList = commentsDatabase.getPositiveFeedback();
 
@@ -216,6 +223,7 @@ public class Viewer extends JFrame {
 	}
 
 	public void switchPanels() {
+		setDefaultComment();
 		cardLayout.next(multiPanel);
 	}
 }

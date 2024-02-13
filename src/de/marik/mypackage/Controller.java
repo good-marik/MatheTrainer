@@ -26,7 +26,7 @@ public class Controller {
 				if (resultToCheck == result) {
 					viewer.isCorrect(true, "");
 				} else {
-					String errorMessage = "Falsch, weil " + taskString + result;
+					String errorMessage = "Falsch :( weil " + taskString + result;
 					viewer.isCorrect(false, errorMessage);
 				}
 				startGame();
@@ -39,23 +39,23 @@ public class Controller {
 //				System.out.println("menu number: " + codeNumber);
 				switch (codeNumber) {
 				case 1:
-					viewer.switchPanels();
 					currentOperation = multiplication;
+					viewer.switchPanels();
 					startGame();
 					break;
 				case 2:
-					viewer.switchPanels();
 					currentOperation = addition;
+					viewer.switchPanels();
 					startGame();
 					break;
 				case 3:
-					viewer.switchPanels();
 					currentOperation = division;
+					viewer.switchPanels();
 					startGame();
 					break;
 				case 4:
-					viewer.switchPanels();
 					currentOperation = substraction;
+					viewer.switchPanels();
 					startGame();
 					break;
 
