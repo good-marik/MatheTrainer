@@ -10,19 +10,27 @@ public class TestingHighScorePanel extends JFrame {
 
 	public TestingHighScorePanel() {
 		super("HighScoreTesting...");
-		add(new HighScorePanel());
+		HighScorePanel hsp = new HighScorePanel();
+		add(hsp);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = new Dimension(500, 300);
 		setMinimumSize(dim);
 		pack();
 		setLocationRelativeTo(null);
+		
 		setVisible(true);
+
+		hsp.toCongratulate();
+		
+		hsp.newRecord();
+		
 	}
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new TestingHighScorePanel();
+				
 			}
 		});
 	}
