@@ -58,10 +58,12 @@ public class HighScorePanel extends JPanel {
 
 		JPanel tablePanel = new JPanel(new GridLayout(2, 2));
 		
-		additionPanel = new ScorePanel("Addition", initialTable, columnName);
-		substractionPanel = new ScorePanel("Substraktion", initialTable, columnName);
-		multiplicationPanel = new ScorePanel("Multiplikation", initialTable, columnName);
-		divisionPanel = new ScorePanel("Division", initialTable, columnName);
+		MyTableModel tableModel = new MyTableModel(initialTable, columnName);
+		
+		additionPanel = new ScorePanel("Addition", tableModel);
+		substractionPanel = new ScorePanel("Substraktion", tableModel);
+		multiplicationPanel = new ScorePanel("Multiplikation", tableModel);
+		divisionPanel = new ScorePanel("Division", tableModel);
 		
 		tablePanel.add(additionPanel);
 		tablePanel.add(substractionPanel);

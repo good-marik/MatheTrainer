@@ -9,17 +9,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class ScorePanel extends JPanel {
+	private MyTableModel tableModel;
 //	private String title;
 //	private String[][] scoresEntry;
 //	private String[] columnName;
 	private int activePlace = 2; // active cell row + 1
+	
 
 	private static final long serialVersionUID = 704313393302539651L;
 
-	ScorePanel(String title, String[][] scores, String[] columnNames) {
+	ScorePanel(String title, MyTableModel tableModel) {
 		super();
+		this.tableModel = tableModel;
 //		this.title = title;
 //		this.scoresEntry = scoresEntry;
 //		this.columnName = columnName;
@@ -30,19 +35,18 @@ public class ScorePanel extends JPanel {
 		label.setHorizontalAlignment(JLabel.CENTER);
 		add(label, BorderLayout.NORTH);
 
-		JTable table = constructTable(scores, columnNames);
+		JTable table = constructTable(tableModel);
 		add(table, BorderLayout.CENTER);
 //		System.out.println(getBackground().toString());
 //		System.out.println(getBackground().getRGB());
 	}
 
-	private JTable constructTable(String[][] initialTable, String[] columnName) {
-		JTable table = new JTable(initialTable, columnName) {
-			private static final long serialVersionUID = -2915270905465335861L;
+	private JTable constructTable(MyTableModel tableModel) {
+		JTable table = new JTable(tableModel) {
 
-			public boolean isCellEditable(int row, int column) {
-				return (column == 1)&&(row + 1 == activePlace);
-			}
+//			public boolean isCellEditable(int row, int column) {
+//				return (column == 1)&&(row + 1 == activePlace);
+//			}
 		};
 		table.setCellSelectionEnabled(false);
 //		table.setFocusable(false);
@@ -59,7 +63,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	public String newRecord(int place) {
-		
+		tableModel.setCellEditable(1, 1, true);
 		return null;
 		
 	}
