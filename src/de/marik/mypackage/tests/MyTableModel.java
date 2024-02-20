@@ -3,16 +3,17 @@ package de.marik.mypackage.tests;
 import javax.swing.table.DefaultTableModel;
 
 public class MyTableModel extends DefaultTableModel {
+	private static final long serialVersionUID = -5751512081464014175L;
 	private boolean[][] editableCells;
 	private int rows;
 	private int columns;
 
-	MyTableModel(int rows, int columns) {
-		super(rows, columns);
-		this.rows = rows;
-		this.columns = columns;
-		editableCells = new boolean[rows][columns];
-	}
+//	MyTableModel(int rows, int columns) {
+//		super(rows, columns);
+//		this.rows = rows;
+//		this.columns = columns;
+//		editableCells = new boolean[rows][columns];
+//	}
 
 	MyTableModel(Object[][] cellValues, Object[] columnNames) {
 		super(cellValues, columnNames);

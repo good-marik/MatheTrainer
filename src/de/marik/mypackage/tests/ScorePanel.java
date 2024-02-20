@@ -82,6 +82,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	private static class MyCellEditor extends DefaultCellEditor {
+		private static final long serialVersionUID = 3635861511428924236L;
 
 		public MyCellEditor(JTextField textField) {
 			super(textField);
@@ -93,10 +94,11 @@ public class ScorePanel extends JPanel {
 	
 	private static class MyCellRenderer extends DefaultTableCellRenderer {
 //		public MyCellRenderer() {
-////			super();
+//			super();
 //			setOpaque(true);
 //		}
-		
+		private static final long serialVersionUID = 5806223741957573550L;
+
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			
