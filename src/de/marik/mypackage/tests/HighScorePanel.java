@@ -28,10 +28,10 @@ public class HighScorePanel extends JPanel {
 			initialTable[i][2] = "666";
 		}
 		
-		String[] columnName = new String[3];
-		for (int i = 0; i < columnName.length; i++) {
-			columnName[i] = "";
-		}
+		String[] columnName = new String[] {"Place", "Name", "Score"};
+//		for (int i = 0; i < columnName.length; i++) {
+//			columnName[i] = "";
+//		}
 		
 		GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -100,7 +100,7 @@ public class HighScorePanel extends JPanel {
 		// as an example
 		ScorePanel panelToCorrect = additionPanel;
 		
-		return panelToCorrect.newRecord(2);
+		return panelToCorrect.newRecord(2); //temp argument
 	}
 	
 	
