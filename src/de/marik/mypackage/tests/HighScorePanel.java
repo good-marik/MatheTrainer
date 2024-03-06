@@ -56,43 +56,35 @@ public class HighScorePanel extends JPanel {
 		JLabel title = new JLabel("Beste Ergebnisse");
 		title.setFont(myDefaultFont);
 		title.setForeground(Color.BLUE);
-		
 		JPanel topPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
+//		GridBagConstraints gbc = new GridBagConstraints();
 //		gbc.gridwidth = GridBagConstraints.REMAINDER;
 //		gbc.fill = GridBagConstraints.HORIZONTAL;
-		topPanel.add(title, gbc);
-//		topPanel.setBackground(Color.RED);
+		topPanel.add(title);
 		mainPanel.add(topPanel, BorderLayout.NORTH);
-		
-//		title.setHorizontalAlignment(JLabel.CENTER);
-////		title.setVerticalAlignment(JLabel.CENTER);
-//		mainPanel.add(title, BorderLayout.NORTH);
 
 		JPanel tablePanel = new JPanel(new GridLayout(2, 2));
-		
 		MyTableModel tableModel = new MyTableModel(initialTable, columnName);
-		
 		additionPanel = new ScorePanel("Addition", tableModel);
 		substractionPanel = new ScorePanel("Substraktion", tableModel);
 		multiplicationPanel = new ScorePanel("Multiplikation", tableModel);
 		divisionPanel = new ScorePanel("Division", tableModel);
-		
 		tablePanel.add(additionPanel);
 		tablePanel.add(substractionPanel);
 		tablePanel.add(multiplicationPanel);
 		tablePanel.add(divisionPanel);
 
 		mainPanel.add(tablePanel, BorderLayout.CENTER);
-		add(mainPanel);
 		
 		
 		exitButton = new JButton("Menu");
 		JPanel buttonPanel = new JPanel(new GridBagLayout());
 		buttonPanel.add(exitButton);
+
 		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		
+		this.add(mainPanel);
 		
 		
 //		JOptionPane gratulationPane = new JOptionPane(new JLabel("Ein neuer Rekord! Gratulation!", JLabel.CENTER));
