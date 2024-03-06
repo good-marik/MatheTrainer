@@ -8,18 +8,21 @@ public class MyTableModel extends DefaultTableModel {
 	private int rows;
 	private int columns;
 
-//	MyTableModel(int rows, int columns) {
-//		super(rows, columns);
-//		this.rows = rows;
-//		this.columns = columns;
-//		editableCells = new boolean[rows][columns];
-//	}
-
 	MyTableModel(Object[][] cellValues, Object[] columnNames) {
 		super(cellValues, columnNames);
 		rows = cellValues.length;
 		columns = columnNames.length;
 		editableCells = new boolean[rows][columns];
+		
+		
+		//Debugging
+//		for (int i = 0; i < columnNames.length; i++) {
+//			for (int j = 0; j < cellValues.length; j++) {
+//				editableCells[j][i] = true;
+//			}
+//		}
+		//Debugging
+		
 	}
 
 	@Override

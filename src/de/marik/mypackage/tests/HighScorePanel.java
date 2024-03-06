@@ -4,9 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,6 +21,8 @@ public class HighScorePanel extends JPanel {
 	private ScorePanel substractionPanel;
 	private ScorePanel multiplicationPanel;
 	private ScorePanel divisionPanel;
+	
+	private JButton exitButton;
 
 	HighScorePanel() {
 		String[][] initialTable = new String[4][3];
@@ -43,7 +47,7 @@ public class HighScorePanel extends JPanel {
 
 		BorderLayout bd = new BorderLayout(0, 0);
 		JPanel mainPanel = new JPanel(bd);
-		Dimension panelSize = new Dimension(450, 225);
+		Dimension panelSize = new Dimension(450, 275);
 		mainPanel.setMaximumSize(panelSize);
 		mainPanel.setPreferredSize(panelSize);
 //		mainPanel.setBackground(Color.CYAN);
@@ -51,10 +55,19 @@ public class HighScorePanel extends JPanel {
 		Font myDefaultFont = new Font("arial", Font.BOLD, 18);
 		JLabel title = new JLabel("Beste Ergebnisse");
 		title.setFont(myDefaultFont);
-		title.setHorizontalAlignment(JLabel.CENTER);
 		title.setForeground(Color.BLUE);
-//		title.setVerticalAlignment(JLabel.CENTER);
-		mainPanel.add(title, BorderLayout.NORTH);
+		
+		JPanel topPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+//		gbc.gridwidth = GridBagConstraints.REMAINDER;
+//		gbc.fill = GridBagConstraints.HORIZONTAL;
+		topPanel.add(title, gbc);
+//		topPanel.setBackground(Color.RED);
+		mainPanel.add(topPanel, BorderLayout.NORTH);
+		
+//		title.setHorizontalAlignment(JLabel.CENTER);
+////		title.setVerticalAlignment(JLabel.CENTER);
+//		mainPanel.add(title, BorderLayout.NORTH);
 
 		JPanel tablePanel = new JPanel(new GridLayout(2, 2));
 		
@@ -72,6 +85,12 @@ public class HighScorePanel extends JPanel {
 
 		mainPanel.add(tablePanel, BorderLayout.CENTER);
 		add(mainPanel);
+		
+		
+		exitButton = new JButton("Menu");
+		JPanel buttonPanel = new JPanel(new GridBagLayout());
+		buttonPanel.add(exitButton);
+		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		
 		

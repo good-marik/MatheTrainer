@@ -13,7 +13,7 @@ public class TestingHighScorePanel extends JFrame {
 		HighScorePanel hsp = new HighScorePanel();
 		add(hsp);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Dimension dim = new Dimension(500, 300);
+		Dimension dim = new Dimension(500, 350);
 		setMinimumSize(dim);
 		pack();
 		setLocationRelativeTo(null);

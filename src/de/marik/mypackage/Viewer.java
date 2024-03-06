@@ -47,7 +47,7 @@ public class Viewer extends JFrame {
 		multiPanel.add(getGamePanel());
 		add(multiPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Dimension dim = new Dimension(500, 300);
+		Dimension dim = new Dimension(500, 350);
 		setMinimumSize(dim);
 //		setSize(dim);
 //		setPreferredSize(dim);
@@ -57,21 +57,25 @@ public class Viewer extends JFrame {
 	}
 
 	private JPanel getMenuPanel() {
-		GridBagLayout gbl = new GridBagLayout();
-		JPanel menuPanel = new JPanel(gbl);
+//		GridBagLayout gbl = new GridBagLayout();
+		JPanel menuPanel = new JPanel(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(5, 5, 5, 5);
 		GridBagConstraints gbcSpecial = new GridBagConstraints();
-		gbcSpecial.insets = new Insets(25, 5, 5, 5);
+//		gbcSpecial.gridwidth = GridBagConstraints.REMAINDER;
+//		gbcSpecial.fill = GridBagConstraints.HORIZONTAL;
+		gbcSpecial.insets = new Insets(20, 5, 5, 5);
 
 		JButton multiplicationButton = new JButton("Mutliplizieren *");
 		JButton additionButton = new JButton("Addieren +");
 		JButton divisionButton = new JButton("Dividieren :");
 		JButton substractionButton = new JButton("Substrahieren –");
 		JButton exitButton = new JButton("Program Beenden");
+		JButton highScoreButton = new JButton("Beste Ergebnisse");
+		
 		exitButton.setForeground(new Color(0, 0, 153));
 
 		ActionListener menuListener = new ActionListener() {
@@ -110,6 +114,7 @@ public class Viewer extends JFrame {
 		menuPanel.add(additionButton, gbc);
 		menuPanel.add(divisionButton, gbc);
 		menuPanel.add(substractionButton, gbc);
+		menuPanel.add(highScoreButton, gbcSpecial);
 		menuPanel.add(exitButton, gbcSpecial);
 
 		return menuPanel;
@@ -189,7 +194,7 @@ public class Viewer extends JFrame {
 
 	public void setTask(String taskString) {
 		taskText.setText(taskString);
-		answerField.grabFocus();
+		answerField.requestFocus();
 	}
 
 	public static Viewer getInstance() {
