@@ -29,7 +29,7 @@ public class Controller {
 					String errorMessage = "Falsch :( weil " + taskString + result;
 					viewer.isCorrect(false, errorMessage);
 				}
-				startGame();
+				playGame();
 			}
 		};
 
@@ -41,22 +41,22 @@ public class Controller {
 				case 1:
 					currentOperation = multiplication;
 					viewer.switchPanels();
-					startGame();
+					playGame();
 					break;
 				case 2:
 					currentOperation = addition;
 					viewer.switchPanels();
-					startGame();
+					playGame();
 					break;
 				case 3:
 					currentOperation = division;
 					viewer.switchPanels();
-					startGame();
+					playGame();
 					break;
 				case 4:
 					currentOperation = substraction;
 					viewer.switchPanels();
-					startGame();
+					playGame();
 					break;
 
 				case 10:
@@ -78,7 +78,7 @@ public class Controller {
 		return controller;
 	}
 
-	public void startGame() {
+	public void playGame() {
 		result = currentOperation.setTask();
 		taskString = currentOperation.getTaskString();
 		viewer.setTask(taskString);

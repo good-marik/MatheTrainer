@@ -17,20 +17,16 @@ public class TestingHighScorePanel extends JFrame {
 		setMinimumSize(dim);
 		pack();
 		setLocationRelativeTo(null);
-		
-		setVisible(true);
 
-		hsp.toCongratulate();
-		
+		setVisible(true);
 		hsp.newRecord();
-		
 	}
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				new TestingHighScorePanel();
-				
+
 			}
 		});
 	}

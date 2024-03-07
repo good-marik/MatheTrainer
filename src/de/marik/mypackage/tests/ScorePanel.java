@@ -7,15 +7,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.DefaultCellEditor;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class ScorePanel extends JPanel {
+	private static final long serialVersionUID = 704313393302539651L;
 	private MyTableModel tableModel;
 //	private String title;
 //	private String[][] scoresEntry;
@@ -25,8 +26,6 @@ public class ScorePanel extends JPanel {
 	private static Font captionFont = new Font("arial", Font.BOLD, 14);
 	private static Font tableFont = new Font("arial", Font.PLAIN, 12);
 	private static Font highlightedFont = new Font("arial", Font.BOLD, 12);
-
-	private static final long serialVersionUID = 704313393302539651L;
 
 	ScorePanel(String title, MyTableModel tableModel) {
 		super();
@@ -77,6 +76,9 @@ public class ScorePanel extends JPanel {
 		DefaultCellEditor myCellEditor = new MyCellEditor();
 		myCellEditor.setClickCountToStart(1);
 		table.setDefaultEditor(Object.class, myCellEditor);
+//		table.requestFocus();
+		
+		
 
 		return table;
 	}
@@ -88,10 +90,20 @@ public class ScorePanel extends JPanel {
 		table.setValueAt("", row, column);
 		tableModel.setCellEditable(row, column, true); // temp agruments
 		table.editCellAt(row, column);
-//		table.changeSelection(row, column, false, false);
 //		table.requestFocus();
-		tableModel.setCellEditable(row, column, false);
+		
+//		tableModel.setCellEditable(row, column, false);
 		System.out.println("already done?");
+		
+		
+		ListSelectionModel rowSelection = table.getSelectionModel();
+		int rowLead = rowSelection.getLeadSelectionIndex();
+
+		ListSelectionModel columnSelection = table.getColumnModel().getSelectionModel();
+		int columnLead = columnSelection.getLeadSelectionIndex();
+		
+		System.out.println(rowLead + " " + columnLead);
+		System.out.println(table.getEditingRow() + " " + table.getEditingColumn());
 
 		return null; // temp argument
 

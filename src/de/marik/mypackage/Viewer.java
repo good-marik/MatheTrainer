@@ -16,12 +16,13 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = 4225066973345513036L;
-	private final static String version = "0.4";
+	private final static String version = "0.5";
 	private final static String programTitle = "MatheTrainer für Alexandra v" + version;
 	private final static String startingMessage = "Let's go!";
 	private static Viewer viewer;
@@ -31,11 +32,11 @@ public class Viewer extends JFrame {
 	private JButton doneButton;
 	private JTextField answerField;
 	private IMyActionListener actionListenerGame;
-	private IMyActionListener actionListenerMenu;
 	private ICommentsDatabase commentsDatabase;
 	private ArrayList<String> positiveFeedbackList;
 	private CardLayout cardLayout;
 	private JPanel multiPanel;
+	private MenuPanel menuPanel;
 
 	private Viewer() {
 		super(programTitle);
@@ -43,7 +44,8 @@ public class Viewer extends JFrame {
 		loadCommentsFromDatabase();
 		cardLayout = new CardLayout();
 		multiPanel = new JPanel(cardLayout);
-		multiPanel.add(getMenuPanel());
+		menuPanel = new MenuPanel();
+		multiPanel.add(menuPanel);
 		multiPanel.add(getGamePanel());
 		add(multiPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,69 +58,6 @@ public class Viewer extends JFrame {
 		setVisible(true);
 	}
 
-	private JPanel getMenuPanel() {
-//		GridBagLayout gbl = new GridBagLayout();
-		JPanel menuPanel = new JPanel(new GridBagLayout());
-
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(5, 5, 5, 5);
-		GridBagConstraints gbcSpecial = new GridBagConstraints();
-//		gbcSpecial.gridwidth = GridBagConstraints.REMAINDER;
-//		gbcSpecial.fill = GridBagConstraints.HORIZONTAL;
-		gbcSpecial.insets = new Insets(20, 5, 5, 5);
-
-		JButton multiplicationButton = new JButton("Mutliplizieren *");
-		JButton additionButton = new JButton("Addieren +");
-		JButton divisionButton = new JButton("Dividieren :");
-		JButton substractionButton = new JButton("Substrahieren –");
-		JButton exitButton = new JButton("Program Beenden");
-		JButton highScoreButton = new JButton("Beste Ergebnisse");
-		
-		exitButton.setForeground(new Color(0, 0, 153));
-
-		ActionListener menuListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == multiplicationButton) {
-					System.out.println("multiplication!");
-					actionListenerMenu.activated(1);
-				}
-				if (e.getSource() == additionButton) {
-					System.out.println("addition!");
-					actionListenerMenu.activated(2);
-				}
-				if (e.getSource() == divisionButton) {
-					System.out.println("division!");
-					actionListenerMenu.activated(3);
-				}
-				if (e.getSource() == substractionButton) {
-					System.out.println("substraction!");
-					actionListenerMenu.activated(4);
-				}
-				if (e.getSource() == exitButton) {
-					System.out.println("exit!");
-					actionListenerMenu.activated(10);
-				}
-			}
-		};
-
-		multiplicationButton.addActionListener(menuListener);
-		additionButton.addActionListener(menuListener);
-		divisionButton.addActionListener(menuListener);
-		substractionButton.addActionListener(menuListener);
-		exitButton.addActionListener(menuListener);
-
-		menuPanel.add(multiplicationButton, gbc);
-		menuPanel.add(additionButton, gbc);
-		menuPanel.add(divisionButton, gbc);
-		menuPanel.add(substractionButton, gbc);
-		menuPanel.add(highScoreButton, gbcSpecial);
-		menuPanel.add(exitButton, gbcSpecial);
-
-		return menuPanel;
-	}
 
 	private JPanel getGamePanel() {
 		JPanel gamePanel = new JPanel(new GridLayout(3, 1));
@@ -169,6 +108,7 @@ public class Viewer extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO: save the score etc
+				toCongratulate();
 				System.out.println("back to menu");
 				switchPanels();
 			}
@@ -189,7 +129,11 @@ public class Viewer extends JFrame {
 	
 	private void loadCommentsFromDatabase() {
 		positiveFeedbackList = commentsDatabase.getPositiveFeedback();
-
+	}
+	
+	private void toCongratulate() {
+//		JOptionPane.showMessageDialog(null, new JLabel("Gratulation!", JLabel.LEFT), "Ein neuer Rekord!", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Gratulation!", "Ein neuer Rekord!", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void setTask(String taskString) {
@@ -206,7 +150,7 @@ public class Viewer extends JFrame {
 
 	public void addMyActionListeners(IMyActionListener actionListenerGame, IMyActionListener actionListenerMenu) {
 		this.actionListenerGame = actionListenerGame;
-		this.actionListenerMenu = actionListenerMenu;
+		menuPanel.setMyActionListener(actionListenerMenu);
 	}
 
 	public void isCorrect(boolean correctAnswer, String errorMessage) {
@@ -219,11 +163,6 @@ public class Viewer extends JFrame {
 			comment.setText(errorMessage);
 		}
 		answerField.setText("");
-//		SwingUtilities.invokeLater(new Runnable() {
-//			public void run() {
-//				answerField.requestFocus();
-//			}
-//		});
 		answerField.requestFocus();
 	}
 
