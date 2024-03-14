@@ -1,6 +1,8 @@
-package de.marik.mypackage;
+package de.marik.mypackage.main;
 
 import javax.swing.SwingUtilities;
+
+import de.marik.mypackage.viewer.Viewer;
 
 public class MatheTrainer {
 

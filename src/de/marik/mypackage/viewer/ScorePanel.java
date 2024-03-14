@@ -1,4 +1,4 @@
-package de.marik.mypackage.tests;
+package de.marik.mypackage.viewer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -41,9 +41,6 @@ public class ScorePanel extends JPanel {
 		add(table, BorderLayout.CENTER);
 //		System.out.println(getBackground().toString());
 //		System.out.println(getBackground().getRGB());
-
-		
-		
 	}
 
 	private JTable constructTable(MyTableModel tableModel) {

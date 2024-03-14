@@ -1,21 +1,19 @@
-package de.marik.mypackage;
+package de.marik.mypackage.main;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Division extends Operation {
-	private int min = 1;
+public class Multiplication extends Operation {
+	private int min = 0;
 	private int max = 10;
 	private int randomA;
 	private int randomB;
-	private int multiplication;
 	private String taskString;
 
 	@Override
 	public int setTask() {
 		randomA = ThreadLocalRandom.current().nextInt(min, max + 1);
 		randomB = ThreadLocalRandom.current().nextInt(min, max + 1);
-		multiplication = randomA * randomB;
-		return randomB;
+		return randomA * randomB;
 	}
 
 	@Override
@@ -25,8 +23,10 @@ public class Division extends Operation {
 
 	@Override
 	public String getTaskString() {
-		taskString = multiplication + " : " + randomA + " = ";
+		taskString = randomA + " * " + randomB + " = ";
 		return taskString;
 	}
+	
+	
 
 }

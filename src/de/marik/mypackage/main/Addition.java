@@ -1,8 +1,8 @@
-package de.marik.mypackage;
+package de.marik.mypackage.main;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Substraction extends Operation {
+public class Addition extends Operation {
 	private int min = 0;
 	private int max = 100;
 	private int randomA;
@@ -12,8 +12,8 @@ public class Substraction extends Operation {
 	@Override
 	public int setTask() {
 		randomA = ThreadLocalRandom.current().nextInt(min, max + 1);
-		randomB = ThreadLocalRandom.current().nextInt(min, randomA + 1);
-		return randomA - randomB;
+		randomB = ThreadLocalRandom.current().nextInt(min, max - randomA + 1);
+		return randomA + randomB;
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class Substraction extends Operation {
 
 	@Override
 	public String getTaskString() {
-		taskString = randomA + " – " + randomB + " = ";
+		taskString = randomA + " + " + randomB + " = ";
 		return taskString;
 	}
 

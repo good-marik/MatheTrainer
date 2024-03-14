@@ -1,4 +1,4 @@
-package de.marik.mypackage.tests;
+package de.marik.mypackage.viewer;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,11 +7,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+
+import de.marik.mypackage.main.IMyActionListener;
 
 public class HighScorePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -20,14 +23,24 @@ public class HighScorePanel extends JPanel {
 	private ScorePanel multiplicationPanel;
 	private ScorePanel divisionPanel;
 	private JButton exitButton;
+	private IMyActionListener controllersListener;
 
 	HighScorePanel() {
-		String[][] initialTable = new String[4][3];
-		for (int i = 0; i < initialTable.length; i++) {
-			initialTable[i][0] = "" + (i + 1);
-			initialTable[i][1] = "Alexandra";
-			initialTable[i][2] = "666";
-		}
+		
+		String[][] initialTable = new String[][] {
+			{"1", "Best!", "120"},
+			{"2", "dummy", "60"},
+			{"3", "dummy", "30"},
+			{"4", "dummy", "10"},
+			};
+
+//		String[][] initialTable = new String[4][3];
+//		for (int i = 0; i < initialTable.length; i++) {
+//			initialTable[i][0] = "" + (i + 1);
+//			initialTable[i][1] = "Alexandra";
+//			initialTable[i][2] = "666";
+//		}
+		
 		String[] columnName = new String[] { "Place", "Name", "Score" };
 
 		setLayout(new GridBagLayout());
@@ -61,7 +74,12 @@ public class HighScorePanel extends JPanel {
 		this.add(tablePanel, gbc);
 
 		exitButton = new JButton("Menu");
-
+		exitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controllersListener.activate(100);
+			}
+		});
 		this.add(exitButton, gbc);
 	}
 
@@ -71,4 +89,7 @@ public class HighScorePanel extends JPanel {
 		return panelToCorrect.newRecord(2); // temp argument
 	}
 
+	public void setMyActionListener(IMyActionListener controllersListener) {
+		this.controllersListener = controllersListener;
+	}
 };

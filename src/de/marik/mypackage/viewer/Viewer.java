@@ -1,4 +1,4 @@
-package de.marik.mypackage;
+package de.marik.mypackage.viewer;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -20,6 +20,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import de.marik.mypackage.main.ICommentsDatabase;
+import de.marik.mypackage.main.IMyActionListener;
+import de.marik.mypackage.main.PrimitiveCommentsDatabase;
+
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = 4225066973345513036L;
 	private final static String version = "0.5";
@@ -31,12 +35,14 @@ public class Viewer extends JFrame {
 	private JButton exitButton;
 	private JButton doneButton;
 	private JTextField answerField;
-	private IMyActionListener actionListenerGame;
+	private IMyActionListener actionListenerForField;
+	private IMyActionListener actionListenerForButtons;
 	private ICommentsDatabase commentsDatabase;
 	private ArrayList<String> positiveFeedbackList;
 	private CardLayout cardLayout;
 	private JPanel multiPanel;
 	private MenuPanel menuPanel;
+	private HighScorePanel highScorePanel;
 
 	private Viewer() {
 		super(programTitle);
@@ -47,6 +53,9 @@ public class Viewer extends JFrame {
 		menuPanel = new MenuPanel();
 		multiPanel.add(menuPanel);
 		multiPanel.add(getGamePanel());
+		highScorePanel = new HighScorePanel();
+		multiPanel.add(highScorePanel);
+		
 		add(multiPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = new Dimension(500, 350);
@@ -57,7 +66,6 @@ public class Viewer extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-
 
 	private JPanel getGamePanel() {
 		JPanel gamePanel = new JPanel(new GridLayout(3, 1));
@@ -80,7 +88,7 @@ public class Viewer extends JFrame {
 		doneButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("ENTER pressed");
+//				System.out.println("ENTER pressed");
 				int answerInt = 0;
 				try {
 					answerInt = Integer.parseInt(answerField.getText());
@@ -89,7 +97,7 @@ public class Viewer extends JFrame {
 					comment.setText("");
 					return;
 				}
-				actionListenerGame.activated(answerInt);
+				actionListenerForField.activate(answerInt);
 			}
 		});
 		getRootPane().setDefaultButton(doneButton);
@@ -107,10 +115,11 @@ public class Viewer extends JFrame {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO: save the score etc
-				toCongratulate();
-				System.out.println("back to menu");
-				switchPanels();
+				
+				actionListenerForButtons.activate(50);
+
+//				toCongratulate();
+//				switchPanel();
 			}
 		});
 //		exitButton.setMaximumSize(new Dimension(55, 100));
@@ -148,9 +157,11 @@ public class Viewer extends JFrame {
 		return viewer;
 	}
 
-	public void addMyActionListeners(IMyActionListener actionListenerGame, IMyActionListener actionListenerMenu) {
-		this.actionListenerGame = actionListenerGame;
-		menuPanel.setMyActionListener(actionListenerMenu);
+	public void setMyActionListeners(IMyActionListener actionListenerForField, IMyActionListener actionListenerForButtons) {
+		this.actionListenerForField = actionListenerForField;
+		this.actionListenerForButtons = actionListenerForButtons;
+		menuPanel.setMyActionListener(actionListenerForButtons);
+		highScorePanel.setMyActionListener(actionListenerForButtons);
 	}
 
 	public void isCorrect(boolean correctAnswer, String errorMessage) {
@@ -166,8 +177,13 @@ public class Viewer extends JFrame {
 		answerField.requestFocus();
 	}
 
-	public void switchPanels() {
+	public void switchPanel() {
 		setDefaultComment();
 		cardLayout.next(multiPanel);
 	}
+	
+	public void switchToHighScorePanel() {
+		cardLayout.last(multiPanel);
+	}
+	
 }

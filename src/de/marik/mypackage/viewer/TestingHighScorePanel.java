@@ -1,4 +1,4 @@
-package de.marik.mypackage.tests;
+package de.marik.mypackage.viewer;
 
 import java.awt.Dimension;
 

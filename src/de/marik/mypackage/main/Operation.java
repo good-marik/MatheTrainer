@@ -1,4 +1,4 @@
-package de.marik.mypackage;
+package de.marik.mypackage.main;
 
 public abstract class Operation {
 

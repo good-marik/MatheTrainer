@@ -1,19 +1,25 @@
-package de.marik.mypackage.tests;
+package de.marik.mypackage.viewer;
+
+import java.io.Serializable;
 
 import javax.swing.table.DefaultTableModel;
 
-public class MyTableModel extends DefaultTableModel {
-	private static final long serialVersionUID = -5751512081464014175L;
+public class MyTableModel extends DefaultTableModel implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	private boolean[][] editableCells;
+	private Object[][] cellValues;
+//	private final Object[] columnNames;
 	private int rows;
 	private int columns;
 
 	MyTableModel(Object[][] cellValues, Object[] columnNames) {
 		super(cellValues, columnNames);
+		this.cellValues = cellValues;
+//		this.columnNames = columnNames;
 		rows = cellValues.length;
 		columns = columnNames.length;
 		editableCells = new boolean[rows][columns];
-		
 		
 		//Debugging
 //		for (int i = 0; i < columnNames.length; i++) {
@@ -22,8 +28,8 @@ public class MyTableModel extends DefaultTableModel {
 //			}
 //		}
 		//Debugging
-		
 	}
+	
 
 	@Override
 	public boolean isCellEditable(int row, int column) {
@@ -33,6 +39,11 @@ public class MyTableModel extends DefaultTableModel {
 	public void setCellEditable(int row, int column, boolean value) {
 		editableCells[row][column] = value;
 		fireTableCellUpdated(row, column);
+	}
+	
+	public void setEntry(int position, String name, int score) {
+		cellValues[position-1][1] = name;
+		cellValues[position-1][2] = String.valueOf(score);
 	}
 
 }
