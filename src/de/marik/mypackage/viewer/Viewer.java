@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 import de.marik.mypackage.main.ICommentsDatabase;
 import de.marik.mypackage.main.IMyActionListener;
+import de.marik.mypackage.main.Operation;
 import de.marik.mypackage.main.PrimitiveCommentsDatabase;
 
 public class Viewer extends JFrame {
@@ -184,6 +185,15 @@ public class Viewer extends JFrame {
 	
 	public void switchToHighScorePanel() {
 		cardLayout.last(multiPanel);
+	}
+
+	public void checkForRecord(Operation operation, int score) {
+		switchPanel();
+		if (highScorePanel.isANewRecord(operation, score)) {
+			toCongratulate();
+			highScorePanel.setNewRecord(score);
+		}
+		
 	}
 	
 }

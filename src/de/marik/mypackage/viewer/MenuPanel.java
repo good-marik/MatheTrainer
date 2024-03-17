@@ -29,10 +29,10 @@ public class MenuPanel extends JPanel {
 	private void init() {
 		setLayout(new GridBagLayout());
 
-		JButton multiplicationButton = new JButton("Mutliplizieren *");
 		JButton additionButton = new JButton("Addieren +");
-		JButton divisionButton = new JButton("Dividieren :");
 		JButton substractionButton = new JButton("Substrahieren –");
+		JButton multiplicationButton = new JButton("Mutliplizieren *");
+		JButton divisionButton = new JButton("Dividieren :");
 		JButton exitButton = new JButton("Program Beenden");
 		JButton highScoreButton = new JButton("Beste Ergebnisse");
 
@@ -68,10 +68,10 @@ public class MenuPanel extends JPanel {
 			}
 		};
 
-		multiplicationButton.addActionListener(menuListener);
 		additionButton.addActionListener(menuListener);
-		divisionButton.addActionListener(menuListener);
 		substractionButton.addActionListener(menuListener);
+		multiplicationButton.addActionListener(menuListener);
+		divisionButton.addActionListener(menuListener);
 		exitButton.addActionListener(menuListener);
 		highScoreButton.addActionListener(menuListener);
 
@@ -84,10 +84,10 @@ public class MenuPanel extends JPanel {
 		//	gbcSpecial.fill = GridBagConstraints.HORIZONTAL;
 		gbcSpecial.insets = new Insets(20, 5, 5, 5);
 		
-		add(multiplicationButton, gbc);
 		add(additionButton, gbc);
-		add(divisionButton, gbc);
 		add(substractionButton, gbc);
+		add(multiplicationButton, gbc);
+		add(divisionButton, gbc);
 		add(highScoreButton, gbcSpecial);
 		add(exitButton, gbcSpecial);
 	}

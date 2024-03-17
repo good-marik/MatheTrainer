@@ -8,6 +8,10 @@ public class Substraction extends Operation {
 	private int randomA;
 	private int randomB;
 	private String taskString;
+	
+	public Substraction() {
+		super("Substraktion");
+	}
 
 	@Override
 	public int setTask() {

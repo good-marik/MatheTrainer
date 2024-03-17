@@ -8,6 +8,10 @@ public class Multiplication extends Operation {
 	private int randomA;
 	private int randomB;
 	private String taskString;
+	
+	public Multiplication() {
+		super("Multiplikation");
+	}
 
 	@Override
 	public int setTask() {

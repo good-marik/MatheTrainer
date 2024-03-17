@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import de.marik.mypackage.main.IMyActionListener;
+import de.marik.mypackage.main.Operation;
 
 public class HighScorePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -22,26 +23,37 @@ public class HighScorePanel extends JPanel {
 	private ScorePanel substractionPanel;
 	private ScorePanel multiplicationPanel;
 	private ScorePanel divisionPanel;
+
+	private MyTableModel additionTableModel;
+	private MyTableModel substractionTableModel;
+	private MyTableModel multiplicationTableModel;
+	private MyTableModel divisionTableModel;
+
+	private String[][] additionTable;
+	private String[][] substractionTable;
+	private String[][] multiplicationTable;
+	private String[][] divisionTable;
+
 	private JButton exitButton;
 	private IMyActionListener controllersListener;
 
-	HighScorePanel() {
-		
-		String[][] initialTable = new String[][] {
-			{"1", "Best!", "120"},
-			{"2", "dummy", "60"},
-			{"3", "dummy", "30"},
-			{"4", "dummy", "10"},
-			};
+	private ScorePanel activeScorePanel;
+	private MyTableModel activeTableModel;
 
-//		String[][] initialTable = new String[4][3];
-//		for (int i = 0; i < initialTable.length; i++) {
-//			initialTable[i][0] = "" + (i + 1);
-//			initialTable[i][1] = "Alexandra";
-//			initialTable[i][2] = "666";
-//		}
-		
-		String[] columnName = new String[] { "Place", "Name", "Score" };
+	HighScorePanel() {
+
+		// default Tables
+		additionTable = new String[][] { { "1", "Best+", "212" }, { "2", "dummy+", "60" }, { "3", "dummy+", "30" },
+				{ "4", "dummy+", "0" } };
+
+		substractionTable = new String[][] { { "1", "Best-", "1201" }, { "2", "dummy-", "61" }, { "3", "dummy-", "31" },
+				{ "4", "dummy-", "1" } };
+
+		multiplicationTable = new String[][] { { "1", "Best*", "212" }, { "2", "dummy*", "60" },
+				{ "3", "dummy*", "30" }, { "4", "dummy*", "12" } };
+
+		divisionTable = new String[][] { { "1", "Best/", "212" }, { "2", "dummy/", "60" }, { "3", "dummy/", "30" },
+				{ "4", "dummy/", "10" } };
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -60,11 +72,15 @@ public class HighScorePanel extends JPanel {
 		Dimension panelSize = new Dimension(450, 210);
 		tablePanel.setPreferredSize(panelSize);
 
-		MyTableModel tableModel = new MyTableModel(initialTable, columnName);
-		additionPanel = new ScorePanel("Addition", tableModel);
-		substractionPanel = new ScorePanel("Substraktion", tableModel);
-		multiplicationPanel = new ScorePanel("Multiplikation", tableModel);
-		divisionPanel = new ScorePanel("Division", tableModel);
+		additionTableModel = new MyTableModel(additionTable, "Addition");
+		substractionTableModel = new MyTableModel(substractionTable, "Substraktion");
+		multiplicationTableModel = new MyTableModel(multiplicationTable, "Multiplikation");
+		divisionTableModel = new MyTableModel(divisionTable, "Division");
+
+		additionPanel = new ScorePanel(additionTableModel);
+		substractionPanel = new ScorePanel(substractionTableModel);
+		multiplicationPanel = new ScorePanel(multiplicationTableModel);
+		divisionPanel = new ScorePanel(divisionTableModel);
 
 		tablePanel.add(additionPanel);
 		tablePanel.add(substractionPanel);
@@ -77,19 +93,81 @@ public class HighScorePanel extends JPanel {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if (activeScorePanel != null) {
+					activeScorePanel.stopEditing();
+					activeTableModel.toPrint();
+				}
 				controllersListener.activate(100);
 			}
 		});
 		this.add(exitButton, gbc);
 	}
 
-	public String newRecord() {
-		// as an example
-		ScorePanel panelToCorrect = additionPanel;
-		return panelToCorrect.newRecord(2); // temp argument
-	}
-
 	public void setMyActionListener(IMyActionListener controllersListener) {
 		this.controllersListener = controllersListener;
 	}
-};
+
+	public boolean isANewRecord(Operation operation, int score) {
+		setActiveTableModelAndScorePanel(operation);
+		int row = activeTableModel.getRowCount() - 1;
+		while (row >= 0) {
+			int tableScore = Integer.parseInt((String) activeTableModel.getValueAt(row, 2));
+//					System.out.println(tablesScore);
+			if (score > tableScore) {
+				return true;
+			}
+			row--;
+		}
+		return false;
+	}
+
+	public int setNewRecord(int score) {
+		int row = activeTableModel.getRowCount() - 1;
+		activeTableModel.setValueAt("", row, 1);
+		activeTableModel.setValueAt("" + score, row, 2);
+		row--;
+		int tableScore = Integer.parseInt((String) activeTableModel.getValueAt(row, 2));
+		while (row >= 0 && score > tableScore) {
+			String tempName = (String) activeTableModel.getValueAt(row, 1);
+			String tempScore = (String) activeTableModel.getValueAt(row, 2);
+			activeTableModel.setValueAt((String) activeTableModel.getValueAt(row + 1, 1), row, 1);
+			activeTableModel.setValueAt((String) activeTableModel.getValueAt(row + 1, 2), row, 2);
+			activeTableModel.setValueAt(tempName, row + 1, 1);
+			activeTableModel.setValueAt(tempScore, row + 1, 2);
+			row--;
+			if (row >= 0) {
+				tableScore = Integer.parseInt((String) activeTableModel.getValueAt(row, 2));
+			}
+		}
+		activeScorePanel.newRecord(++row);
+
+		return 0; // TODO
+	}
+
+	private void setActiveTableModelAndScorePanel(Operation operation) {
+		System.out.println("current operation: " + operation.getName());
+		switch (operation.getName()) {
+		case "Addition":
+			activeTableModel = additionTableModel;
+			activeScorePanel = additionPanel;
+			break;
+		case "Substraktion":
+			activeTableModel = substractionTableModel;
+			activeScorePanel = substractionPanel;
+			break;
+		case "Multiplikation":
+			activeTableModel = multiplicationTableModel;
+			activeScorePanel = multiplicationPanel;
+			break;
+		case "Division":
+			activeTableModel = divisionTableModel;
+			activeScorePanel = divisionPanel;
+			break;
+		default:
+			System.out.println("unknonwn operation!");
+			System.exit(0);
+		}
+
+	}
+
+}

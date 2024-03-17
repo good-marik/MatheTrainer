@@ -19,7 +19,7 @@ public class TestingHighScorePanel extends JFrame {
 		setLocationRelativeTo(null);
 
 		setVisible(true);
-		hsp.newRecord();
+//		hsp.newRecord();
 	}
 
 	public static void main(String[] args) {

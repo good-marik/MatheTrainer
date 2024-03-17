@@ -11,28 +11,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class ScorePanel extends JPanel {
-	private static final long serialVersionUID = 704313393302539651L;
 	private MyTableModel tableModel;
-//	private String title;
-//	private String[][] scoresEntry;
-//	private String[] columnName;
-//	private int activePlace = 2; // active cell row + 1
 	private JTable table;
-	private static Font captionFont = new Font("arial", Font.BOLD, 14);
-	private static Font tableFont = new Font("arial", Font.PLAIN, 12);
-	private static Font highlightedFont = new Font("arial", Font.BOLD, 12);
+	private final static Font captionFont = new Font("arial", Font.BOLD, 14);
+	private final static Font tableFont = new Font("arial", Font.PLAIN, 12);
+	private final static Font highlightedFont = new Font("arial", Font.BOLD, 12);
+	private final static int NOROW = 666;
+	private int activeRow;
 
-	ScorePanel(String title, MyTableModel tableModel) {
+	ScorePanel(MyTableModel tableModel) {
 		super();
 		this.tableModel = tableModel;
 		setLayout(new BorderLayout());
 
-		JLabel label = new JLabel(title);
+		JLabel label = new JLabel(tableModel.getTitel());
 		label.setFont(captionFont);
 		label.setHorizontalAlignment(JLabel.CENTER);
 		add(label, BorderLayout.NORTH);
@@ -44,12 +40,7 @@ public class ScorePanel extends JPanel {
 	}
 
 	private JTable constructTable(MyTableModel tableModel) {
-		table = new JTable(tableModel) {
-
-//			public boolean isCellEditable(int row, int column) {
-//				return (column == 1)&&(row + 1 == activePlace);
-//			}
-		};
+		table = new JTable(tableModel);
 		table.setCellSelectionEnabled(true);
 		table.setFocusable(true);
 
@@ -61,6 +52,8 @@ public class ScorePanel extends JPanel {
 		table.setShowGrid(false); // GRID!
 		table.setFont(tableFont);
 
+		activeRow = NOROW;
+
 //		DefaultTableCellRenderer centeringRenderer = new DefaultTableCellRenderer();
 //		centeringRenderer.setHorizontalAlignment(JLabel.CENTER);
 //		table.getColumnModel().getColumn(0).setCellRenderer(centeringRenderer);
@@ -69,101 +62,105 @@ public class ScorePanel extends JPanel {
 		table.setDefaultRenderer(Object.class, new MyCellRenderer());
 
 //		((DefaultCellEditor) table.getDefaultEditor(Object.class)).setClickCountToStart(1);
-		
+
 		DefaultCellEditor myCellEditor = new MyCellEditor();
 		myCellEditor.setClickCountToStart(1);
 		table.setDefaultEditor(Object.class, myCellEditor);
 //		table.requestFocus();
-		
-		
 
 		return table;
 	}
 
-	public String newRecord(int place) {
-		int row = 1;
+	public String newRecord(int row) {
 		int column = 1;
-
 		table.setValueAt("", row, column);
 		tableModel.setCellEditable(row, column, true); // temp agruments
+		table.setValueAt(table.getValueAt(row, 0), row, 0); // for re-drawing with other color
+		activeRow = row;
+		table.requestFocus();
 		table.editCellAt(row, column);
-//		table.requestFocus();
 		
+
 //		tableModel.setCellEditable(row, column, false);
-		System.out.println("already done?");
-		
-		
-		ListSelectionModel rowSelection = table.getSelectionModel();
-		int rowLead = rowSelection.getLeadSelectionIndex();
+//		System.out.println("already done?");
 
-		ListSelectionModel columnSelection = table.getColumnModel().getSelectionModel();
-		int columnLead = columnSelection.getLeadSelectionIndex();
-		
-		System.out.println(rowLead + " " + columnLead);
-		System.out.println(table.getEditingRow() + " " + table.getEditingColumn());
+//		ListSelectionModel rowSelection = table.getSelectionModel();
+//		int rowLead = rowSelection.getLeadSelectionIndex();
+//
+//		ListSelectionModel columnSelection = table.getColumnModel().getSelectionModel();
+//		int columnLead = columnSelection.getLeadSelectionIndex();
+//		
+//		System.out.println(rowLead + " " + columnLead);
+//		System.out.println(table.getEditingRow() + " " + table.getEditingColumn());
 
+		// TODO!
 		return null; // temp argument
-
 	}
 
-	private static class MyCellEditor extends DefaultCellEditor {
-		
-		private static final long serialVersionUID = 3635861511428924236L;
+	public void stopEditing() {
+		if (activeRow != NOROW) {
+			int column = 1;
+			tableModel.setCellEditable(activeRow, column, false);
+			activeRow = NOROW;
+		}
+	}
+
+	private class MyCellEditor extends DefaultCellEditor {
 
 		public MyCellEditor() {
 			super(new JTextField());
 		}
-		
-		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
-			      int row, int column) {
-			
-		    JTextField textField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected,
-		            row, column);
+
+		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+				int column) {
+
+			JTextField textField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row,
+					column);
 
 //		        textField.setText(value.toString());
-		        
-		        textField.setFont(highlightedFont);
-		        textField.setForeground(Color.RED);
-		        textField.setHorizontalAlignment(SwingConstants.CENTER);
+
+			textField.setFont(highlightedFont);
+			textField.setForeground(Color.RED);
+			textField.setHorizontalAlignment(SwingConstants.CENTER);
 //		        System.out.println("entering name....");
-		        return textField;
+			return textField;
 		}
 
 	}
 
-	private static class MyCellRenderer extends DefaultTableCellRenderer {
+	private class MyCellRenderer extends DefaultTableCellRenderer {
+
 		public MyCellRenderer() {
 			super();
 //			setOpaque(true);
 		}
-		private static final long serialVersionUID = 5806223741957573550L;
 
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
-			
+
 			setText(value.toString());
 			setFont(tableFont);
-			
-			if(row == 1) {
+
+			if (row == activeRow) {
 				setFont(highlightedFont);
 				setForeground(Color.RED);
 			} else {
 				setFont(tableFont);
 				setForeground(Color.BLACK);
 			}
-			
-			if(column == 0||column == 1) {
+
+			if (column == 0 || column == 1) {
 				setHorizontalAlignment(SwingConstants.CENTER);
 			} else {
 				setHorizontalAlignment(SwingConstants.LEFT);
 			}
-			
+
 //			if (isSelected) {
 //				setBackground(Color.YELLOW);
 //			} else {
 //				setBackground(Color.LIGHT_GRAY);
 //			}
-			
+
 			return this;
 		}
 

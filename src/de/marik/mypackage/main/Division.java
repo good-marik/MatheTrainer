@@ -9,6 +9,10 @@ public class Division extends Operation {
 	private int randomB;
 	private int multiplication;
 	private String taskString;
+	
+	public Division() {
+		super("Division");
+	}
 
 	@Override
 	public int setTask() {
