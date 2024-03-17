@@ -83,8 +83,9 @@ public class HighScorePanel extends JPanel {
 				if (activeScorePanel != null) {
 					activeScorePanel.stopEditing();
 					// debugging!
-					activeTableModel.toPrint();
-//					saveHighScoreTables(file);
+//					System.out.println("printing active TableModel");
+//					activeTableModel.toPrint();
+					saveHighScoreTables(file);
 				}
 				controllersListener.activate(100);
 			}

@@ -15,7 +15,7 @@ public class Controller {
 	private Division division;
 	private Substraction substraction;
 	private int score;
-	private long startingTime;
+	private Stopwatch localTimer;
 
 	private Controller(Viewer viewer) {
 		this.viewer = viewer;
@@ -23,10 +23,21 @@ public class Controller {
 		multiplication = new Multiplication();
 		division = new Division();
 		substraction = new Substraction();
+		
+		Stopwatch globalTimer = new Stopwatch();
+		
+		//for debugging
+		localTimer = new Stopwatch();
 
 		actionListenerForField = new IMyActionListener() {
 			@Override
 			public void activate(int resultToCheck) {
+				double duration = localTimer.stopAndGetSeconds();
+				
+//				System.out.println(currentOperation.getTaskString() + result);
+				System.out.print("time " + String.format("%.2f", duration) + " :  ");
+				System.out.println(currentOperation.getTaskString() + result);
+				
 				if (resultToCheck == result) {
 					viewer.isCorrect(true, "");
 					addScore();
@@ -41,30 +52,35 @@ public class Controller {
 		actionListenerForButtons = new IMyActionListener() {
 			@Override
 			public void activate(int codeNumber) {
-				//TODO: change numbers to string in CASE, change switchPanel() to better-named methods
+				//TODO: change numbers to ENUM
+				//TODO: change switchPanel() to a better-named method(s)
 				switch (codeNumber) {
 				case 1:
 					currentOperation = multiplication;
 					viewer.switchPanel();
-					startTimer();
+					globalTimer.start();
+					localTimer.start();
 					playGame();
 					break;
 				case 2:
 					currentOperation = addition;
 					viewer.switchPanel();
-					startTimer();
+					globalTimer.start();
+					localTimer.start();
 					playGame();
 					break;
 				case 3:
 					currentOperation = division;
 					viewer.switchPanel();
-					startTimer();
+					globalTimer.start();
+					localTimer.start();
 					playGame();
 					break;
 				case 4:
 					currentOperation = substraction;
 					viewer.switchPanel();
-					startTimer();
+					globalTimer.start();
+					localTimer.start();
 					playGame();
 					break;
 
@@ -74,13 +90,10 @@ public class Controller {
 					break;
 
 				case 50:	//EndOfGame button is pressed 
-					double gameTime = stopTimerAndGetSeconds();
+					double gameTime = globalTimer.stopAndGetSeconds();
 					int normallizedScore = recalculateScore(score, gameTime);
 					viewer.checkForRecord(currentOperation, normallizedScore);
-
-					//TODO
 //					viewer.switchPanel();
-					
 					break;
 				
 				case 100:	//Menu button is pressed
@@ -93,21 +106,20 @@ public class Controller {
 					viewer.dispose();
 					System.exit(0);
 				}
-
 			}
 		};
 
 		viewer.setMyActionListeners(actionListenerForField, actionListenerForButtons);
 	}
 
-	private double stopTimerAndGetSeconds() {
-		long endTime = System.nanoTime();
-		return (endTime - startingTime) / 1e+9;
-	}
+//	private double stopTimerAndGetSeconds() {
+//		long endTime = System.nanoTime();
+//		return (endTime - startingTime) / 1e+9;
+//	}
 
-	private void startTimer() {
-		startingTime = System.nanoTime();
-	}
+//	private void startTimer() {
+//		startingTime = System.nanoTime();
+//	}
 
 	private int recalculateScore(int score, double gameTime) {
 		int normScore = 0;
@@ -115,7 +127,7 @@ public class Controller {
 		double normScoreDouble;
 		normScoreDouble = score / gameTime * 100;
 		System.out.println("--------------");
-		System.out.println("calculating scores here!");
+		System.out.println("calculating score here!");
 		System.out.println("score: " + score);
 		System.out.println(gameTime + " seconds");
 		System.out.println("normallized score: " + normScore);
@@ -127,7 +139,7 @@ public class Controller {
 	private void addScore() {
 		// to implement properly!
 		score = score + 10;
-		System.out.println("Score: " + score);
+//		System.out.println("Score: " + score);
 
 	}
 
@@ -142,5 +154,6 @@ public class Controller {
 		result = currentOperation.setTask();
 		taskString = currentOperation.getTaskString();
 		viewer.setTask(taskString);
+		localTimer.start();
 	}
 }

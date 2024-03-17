@@ -43,6 +43,7 @@ public class ScorePanel extends JPanel {
 		table = new JTable(tableModel);
 		table.setCellSelectionEnabled(true);
 		table.setFocusable(true);
+		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
 		table.setRowHeight(20);
 		table.getColumnModel().getColumn(0).setPreferredWidth(15);
@@ -79,7 +80,6 @@ public class ScorePanel extends JPanel {
 		activeRow = row;
 		table.requestFocus();
 		table.editCellAt(row, column);
-		
 
 //		tableModel.setCellEditable(row, column, false);
 //		System.out.println("already done?");
@@ -99,8 +99,11 @@ public class ScorePanel extends JPanel {
 
 	public void stopEditing() {
 		if (activeRow != NOROW) {
-			int column = 1;
-			tableModel.setCellEditable(activeRow, column, false);
+			// debugging
+//			System.out.println(tableModel.getValueAt(activeRow, 1).getClass());
+//			System.out.println("current name: " + tableModel.getValueAt(activeRow, 1));
+//			System.out.println(((String) tableModel.getValueAt(activeRow, 1)).isEmpty());
+			tableModel.setCellEditable(activeRow, 1, false);
 			activeRow = NOROW;
 		}
 	}
@@ -109,6 +112,7 @@ public class ScorePanel extends JPanel {
 		public MyCellEditor() {
 			super(new JTextField());
 		}
+
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
 				int column) {
 
@@ -130,6 +134,7 @@ public class ScorePanel extends JPanel {
 			super();
 //			setOpaque(true);
 		}
+
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			setText(value.toString());

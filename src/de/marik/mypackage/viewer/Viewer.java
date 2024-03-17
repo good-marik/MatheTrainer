@@ -27,7 +27,7 @@ import de.marik.mypackage.main.PrimitiveCommentsDatabase;
 
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = 4225066973345513036L;
-	private final static String version = "0.5";
+	private final static String version = "0.6";
 	private final static String programTitle = "MatheTrainer für Alexandra v" + version;
 	private final static String startingMessage = "Let's go!";
 	private static Viewer viewer;
