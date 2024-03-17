@@ -9,6 +9,12 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,7 +24,9 @@ import de.marik.mypackage.main.IMyActionListener;
 import de.marik.mypackage.main.Operation;
 
 public class HighScorePanel extends JPanel {
-	private static final long serialVersionUID = 1L;
+	private static String filename = "scores";
+	private File file;
+	
 	private ScorePanel additionPanel;
 	private ScorePanel substractionPanel;
 	private ScorePanel multiplicationPanel;
@@ -29,31 +37,15 @@ public class HighScorePanel extends JPanel {
 	private MyTableModel multiplicationTableModel;
 	private MyTableModel divisionTableModel;
 
-	private String[][] additionTable;
-	private String[][] substractionTable;
-	private String[][] multiplicationTable;
-	private String[][] divisionTable;
+	private ScorePanel activeScorePanel;
+	private MyTableModel activeTableModel;
 
 	private JButton exitButton;
 	private IMyActionListener controllersListener;
 
-	private ScorePanel activeScorePanel;
-	private MyTableModel activeTableModel;
-
 	HighScorePanel() {
 
-		// default Tables
-		additionTable = new String[][] { { "1", "Best+", "212" }, { "2", "dummy+", "60" }, { "3", "dummy+", "30" },
-				{ "4", "dummy+", "0" } };
-
-		substractionTable = new String[][] { { "1", "Best-", "1201" }, { "2", "dummy-", "61" }, { "3", "dummy-", "31" },
-				{ "4", "dummy-", "1" } };
-
-		multiplicationTable = new String[][] { { "1", "Best*", "212" }, { "2", "dummy*", "60" },
-				{ "3", "dummy*", "30" }, { "4", "dummy*", "12" } };
-
-		divisionTable = new String[][] { { "1", "Best/", "212" }, { "2", "dummy/", "60" }, { "3", "dummy/", "30" },
-				{ "4", "dummy/", "10" } };
+		loadHighScoreTables();
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -71,11 +63,6 @@ public class HighScorePanel extends JPanel {
 		JPanel tablePanel = new JPanel(new GridLayout(2, 2));
 		Dimension panelSize = new Dimension(450, 210);
 		tablePanel.setPreferredSize(panelSize);
-
-		additionTableModel = new MyTableModel(additionTable, "Addition");
-		substractionTableModel = new MyTableModel(substractionTable, "Substraktion");
-		multiplicationTableModel = new MyTableModel(multiplicationTable, "Multiplikation");
-		divisionTableModel = new MyTableModel(divisionTable, "Division");
 
 		additionPanel = new ScorePanel(additionTableModel);
 		substractionPanel = new ScorePanel(substractionTableModel);
@@ -95,12 +82,78 @@ public class HighScorePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (activeScorePanel != null) {
 					activeScorePanel.stopEditing();
+					// debugging!
 					activeTableModel.toPrint();
+//					saveHighScoreTables(file);
 				}
 				controllersListener.activate(100);
 			}
 		});
 		this.add(exitButton, gbc);
+	}
+
+	private void loadHighScoreTables() {
+		file = new File(filename);
+		System.out.println(filename + " exists? - " + file.isFile());
+
+		if (file.isFile()) {
+			readHighScoreTablesFromFile(file);
+		} else {
+			generateDefaultHighScoreTables(file);
+		}
+
+	}
+
+	private void generateDefaultHighScoreTables(File file) {
+		// default Tables
+		String[][] additionTable = new String[][] { { "1", "Best+", "212" }, { "2", "dummy+", "60" },
+				{ "3", "dummy+", "30" }, { "4", "dummy+", "0" } };
+
+		String[][] substractionTable = new String[][] { { "1", "Best-", "1201" }, { "2", "dummy-", "61" },
+				{ "3", "dummy-", "31" }, { "4", "dummy-", "1" } };
+
+		String[][] multiplicationTable = new String[][] { { "1", "Best*", "212" }, { "2", "dummy*", "60" },
+				{ "3", "dummy*", "30" }, { "4", "dummy*", "12" } };
+
+		String[][] divisionTable = new String[][] { { "1", "Best/", "212" }, { "2", "dummy/", "60" },
+				{ "3", "dummy/", "30" }, { "4", "dummy/", "10" } };
+
+		additionTableModel = new MyTableModel(additionTable, "Addition");
+		substractionTableModel = new MyTableModel(substractionTable, "Substraktion");
+		multiplicationTableModel = new MyTableModel(multiplicationTable, "Multiplikation");
+		divisionTableModel = new MyTableModel(divisionTable, "Division");
+		
+		System.out.println("saving file is accomplished? : " + saveHighScoreTables(file));
+	}
+	
+	private boolean saveHighScoreTables(File file) {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
+			out.writeObject(additionTableModel);
+			out.writeObject(substractionTableModel);
+			out.writeObject(multiplicationTableModel);
+			out.writeObject(divisionTableModel);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	private void readHighScoreTablesFromFile(File file) {
+		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
+			additionTableModel = (MyTableModel) in.readObject();
+			substractionTableModel = (MyTableModel) in.readObject();
+			multiplicationTableModel = (MyTableModel) in.readObject();
+			divisionTableModel = (MyTableModel) in.readObject();
+		} catch (IOException e) {
+			System.out.println("I/O problem here!!!!!!!!!");
+			e.printStackTrace();
+			return; 
+		} catch (ClassNotFoundException c) {
+			System.out.println("Expected TableModel is not found or damaged!");
+			c.printStackTrace();
+			return;
+		}
 	}
 
 	public void setMyActionListener(IMyActionListener controllersListener) {
@@ -121,7 +174,7 @@ public class HighScorePanel extends JPanel {
 		return false;
 	}
 
-	public int setNewRecord(int score) {
+	public void setNewRecord(int score) {
 		int row = activeTableModel.getRowCount() - 1;
 		activeTableModel.setValueAt("", row, 1);
 		activeTableModel.setValueAt("" + score, row, 2);
@@ -140,8 +193,6 @@ public class HighScorePanel extends JPanel {
 			}
 		}
 		activeScorePanel.newRecord(++row);
-
-		return 0; // TODO
 	}
 
 	private void setActiveTableModelAndScorePanel(Operation operation) {

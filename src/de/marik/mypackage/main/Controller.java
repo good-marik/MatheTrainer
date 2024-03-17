@@ -75,7 +75,6 @@ public class Controller {
 
 				case 50:	//EndOfGame button is pressed 
 					double gameTime = stopTimerAndGetSeconds();
-					System.out.println("calculating scores here!");
 					int normallizedScore = recalculateScore(score, gameTime);
 					viewer.checkForRecord(currentOperation, normallizedScore);
 
@@ -112,11 +111,15 @@ public class Controller {
 
 	private int recalculateScore(int score, double gameTime) {
 		int normScore = 0;
-		normScore = (int) (score / gameTime * 100); 
+		normScore = (int) (score / gameTime * 100);
+		double normScoreDouble;
+		normScoreDouble = score / gameTime * 100;
 		System.out.println("--------------");
+		System.out.println("calculating scores here!");
 		System.out.println("score: " + score);
 		System.out.println(gameTime + " seconds");
 		System.out.println("normallized score: " + normScore);
+		System.out.println("exact value: " + normScoreDouble);
 		System.out.println("--------------");
 		return normScore;
 	}

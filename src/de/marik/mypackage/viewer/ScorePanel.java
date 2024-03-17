@@ -106,11 +106,9 @@ public class ScorePanel extends JPanel {
 	}
 
 	private class MyCellEditor extends DefaultCellEditor {
-
 		public MyCellEditor() {
 			super(new JTextField());
 		}
-
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
 				int column) {
 
@@ -125,19 +123,15 @@ public class ScorePanel extends JPanel {
 //		        System.out.println("entering name....");
 			return textField;
 		}
-
 	}
 
 	private class MyCellRenderer extends DefaultTableCellRenderer {
-
 		public MyCellRenderer() {
 			super();
 //			setOpaque(true);
 		}
-
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
-
 			setText(value.toString());
 			setFont(tableFont);
 
