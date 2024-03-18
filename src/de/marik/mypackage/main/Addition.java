@@ -22,7 +22,14 @@ public class Addition extends Operation {
 
 	@Override
 	public int getPoints() {
-		return 1;
+		if ( (randomA <= 10 || randomB <= 10) && ((randomA % 10 + randomB & 10) <= 10 ) ) {
+			return 15;
+		}
+		if ((randomA % 10 + randomB % 10) > 10) {
+			return 25;
+		}
+		// default
+		return 22;
 	}
 
 	@Override

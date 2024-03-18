@@ -27,7 +27,7 @@ import de.marik.mypackage.main.PrimitiveCommentsDatabase;
 
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = 4225066973345513036L;
-	private final static String version = "0.6";
+	private final static String version = "0.7";
 	private final static String programTitle = "MatheTrainer für Alexandra v" + version;
 	private final static String startingMessage = "Let's go!";
 	private static Viewer viewer;
@@ -142,12 +142,19 @@ public class Viewer extends JFrame {
 	}
 	
 	private void toCongratulate() {
-//		JOptionPane.showMessageDialog(null, new JLabel("Gratulation!", JLabel.LEFT), "Ein neuer Rekord!", JOptionPane.INFORMATION_MESSAGE);
-		JOptionPane.showMessageDialog(null, "Gratulation!", "Ein neuer Rekord!", JOptionPane.INFORMATION_MESSAGE);
+//		JOptionPane.showMessageDialog(null, "Ein neuer Rekord!", "Gratulation!", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, new JLabel("Ein neuer Rekord!", JLabel.CENTER), "Gratulation!", JOptionPane.PLAIN_MESSAGE);
+	}
+	
+	private void toShowScore(int score) {
+		String text = "Deine Punkten: " + score;
+//		JOptionPane.showMessageDialog(null, text, "", JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(null, new JLabel(text, JLabel.CENTER), "", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	public void setTask(String taskString) {
 		taskText.setText(taskString);
+		answerField.setText("");
 		answerField.requestFocus();
 	}
 
@@ -192,6 +199,8 @@ public class Viewer extends JFrame {
 		if (highScorePanel.isANewRecord(operation, score)) {
 			toCongratulate();
 			highScorePanel.setNewRecord(score);
+		} else {
+			toShowScore(score);
 		}
 		
 	}

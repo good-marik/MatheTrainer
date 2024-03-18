@@ -8,7 +8,7 @@ public class Multiplication extends Operation {
 	private int randomA;
 	private int randomB;
 	private String taskString;
-	
+
 	public Multiplication() {
 		super("Multiplikation");
 	}
@@ -22,7 +22,14 @@ public class Multiplication extends Operation {
 
 	@Override
 	public int getPoints() {
-		return 1;
+		if (randomA * randomB == 0 || randomA == 1 || randomB == 1) {
+			return 10;
+		}
+		if (randomA == 9 || randomB == 9 || randomA == 7 || randomB == 7) {
+			return 20;
+		}
+		// default
+		return 15;
 	}
 
 	@Override
@@ -30,7 +37,5 @@ public class Multiplication extends Operation {
 		taskString = randomA + " * " + randomB + " = ";
 		return taskString;
 	}
-	
-	
 
 }

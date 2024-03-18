@@ -22,7 +22,17 @@ public class Substraction extends Operation {
 
 	@Override
 	public int getPoints() {
-		return 1;
+		if (randomA <= 10 || randomA == randomB) {
+			return 10;
+		}
+		if (randomB <= 10) {
+			return 20;
+		}
+		if (randomA % 10 < randomB % 10) {
+			return 40;
+		}
+		// default
+		return 30;
 	}
 
 	@Override
