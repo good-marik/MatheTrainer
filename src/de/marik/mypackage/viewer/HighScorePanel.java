@@ -107,17 +107,17 @@ public class HighScorePanel extends JPanel {
 
 	private void generateDefaultHighScoreTables(File file) {
 		// default Tables
-		String[][] additionTable = new String[][] { { "1", "Best+", "212" }, { "2", "dummy+", "60" },
-				{ "3", "dummy+", "30" }, { "4", "dummy+", "0" } };
+		String[][] additionTable = new String[][] { { "1", "Meister Yoda", "700" }, { "2", "Schlaufuchs", "350" },
+				{ "3", "Ehrgeiziger Nachbar", "200" }, { "4", "Глупыш", "70" } };
 
-		String[][] substractionTable = new String[][] { { "1", "Best-", "1201" }, { "2", "dummy-", "61" },
-				{ "3", "dummy-", "31" }, { "4", "dummy-", "1" } };
+		String[][] substractionTable = new String[][] { { "1", "Meister Yoda", "800" }, { "2", "Schlaufuchs", "400" },
+				{ "3", "Ehrgeiziger Nachbar", "200" }, { "4", "Глупыш", "80" } };
 
-		String[][] multiplicationTable = new String[][] { { "1", "Best*", "212" }, { "2", "dummy*", "60" },
-				{ "3", "dummy*", "30" }, { "4", "dummy*", "12" } };
+		String[][] multiplicationTable = new String[][] { { "1", "Meister Yoda", "900" }, { "2", "Schlaufuchs", "450" },
+				{ "3", "Ehrgeiziger Nachbar", "250" }, { "4", "Глупыш", "90" } };
 
-		String[][] divisionTable = new String[][] { { "1", "Best/", "212" }, { "2", "dummy/", "60" },
-				{ "3", "dummy/", "30" }, { "4", "dummy/", "10" } };
+		String[][] divisionTable = new String[][] { { "1", "Meister Yoda", "900" }, { "2", "Schlaufuchs", "450" },
+				{ "3", "Ehrgeiziger Nachbar", "250" }, { "4", "Глупыш", "90" } };
 
 		additionTableModel = new MyTableModel(additionTable, "Addition");
 		substractionTableModel = new MyTableModel(substractionTable, "Substraktion");
