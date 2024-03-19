@@ -16,6 +16,8 @@ public class Controller {
 	private Substraction substraction;
 	private int score;
 	private Stopwatch localTimer;
+	private Stopwatch globalTimer;
+	private int gameCounter;
 
 	private Controller(Viewer viewer) {
 		this.viewer = viewer;
@@ -24,7 +26,7 @@ public class Controller {
 		division = new Division();
 		substraction = new Substraction();
 
-		Stopwatch globalTimer = new Stopwatch();
+		globalTimer = new Stopwatch();
 
 		// for debugging
 		localTimer = new Stopwatch();
@@ -32,13 +34,18 @@ public class Controller {
 		actionListenerForField = new IMyActionListener() {
 			@Override
 			public void activate(int resultToCheck) {
-
 				double duration = localTimer.stopAndGetSeconds();
+				gameCounter++;
+				
 				System.out.printf("%5.2f", duration);
 				System.out.print(" : ");
 				System.out.printf("%13s", currentOperation.getTaskString() + result);
-				int effectivePoints = (int) (currentOperation.getPoints() / duration);
-				System.out.println(" :   " + currentOperation.getPoints() + " :   " + effectivePoints);
+//				int effectivePoints = (int) (currentOperation.getPoints() / duration);
+//				System.out.println(" :   " + currentOperation.getPoints() + " :   " + effectivePoints);
+				
+				System.out.print(" :   " + currentOperation.getPoints());
+				System.out.print( " -> " + calculateTimeDependentScore(currentOperation.getPoints()));
+				System.out.println(" ; time:  " + globalTimer.getSeconds());
 
 				if (resultToCheck == result) {
 					viewer.isCorrect(true, "");
@@ -95,13 +102,14 @@ public class Controller {
 				case 50: // EndOfGame button is pressed
 					double gameTime = globalTimer.stopAndGetSeconds();
 					int normallizedScore = recalculateScore(score, gameTime);
-					viewer.checkForRecord(currentOperation, normallizedScore);
+					viewer.checkForRecord(currentOperation, normallizedScore, isEnoughGames(gameCounter));
 //					viewer.switchPanel();
 					break;
 
 				case 100: // Menu button is pressed
 //					System.out.println("menu button is pressed");
 					score = 0;
+					gameCounter = 0;
 					viewer.switchPanel();
 					break;
 				case 10: // Exit button is pressed
@@ -113,6 +121,10 @@ public class Controller {
 		};
 
 		viewer.setMyActionListeners(actionListenerForField, actionListenerForButtons);
+	}
+
+	private boolean isEnoughGames(int counter) {
+		return counter >= 10;
 	}
 
 	public static Controller getInstance(Viewer viewer) {
@@ -129,13 +141,22 @@ public class Controller {
 		localTimer.start();
 	}
 	
+	private int calculateTimeDependentScore(int points) {
+		final double k = 0.1;
+		int cycle = (int) globalTimer.getSeconds() / 60;  //starts from 0, each cycle takes 60 seconds
+		int recalibratedPoints = (int) ((k * cycle + 1) * points);	//so scaling factors: 1, 1.1, 1.2, 1.3,... for a cycle
+		return recalibratedPoints;
+	}
+	
 	private void addScore() {
-		score = score + currentOperation.getPoints();
-//		System.out.println("+" + currentOperation.getPoints());
+		int delta = calculateTimeDependentScore(currentOperation.getPoints());
+		score = score + delta;
+//		System.out.println("+" + delta);
 	}
 
 	private void substractScore() {
-		int penalty = currentOperation.getPoints() / 2;
+		int delta = calculateTimeDependentScore(currentOperation.getPoints());
+		int penalty = delta / 2; // penalty is 2 times lower, than win points
 		score = score - penalty;
 //		System.out.println("-" + penalty);
 	}

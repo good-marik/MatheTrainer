@@ -31,6 +31,7 @@ public class ScorePanel extends JPanel {
 		JLabel label = new JLabel(tableModel.getTitel());
 		label.setFont(captionFont);
 		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setForeground(Color.BLUE);
 		add(label, BorderLayout.NORTH);
 
 		table = constructTable(tableModel);
@@ -45,8 +46,15 @@ public class ScorePanel extends JPanel {
 		table.setFocusable(true);
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
+//		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
 		table.setRowHeight(20);
-		table.getColumnModel().getColumn(0).setPreferredWidth(15);
+//		table.getColumnModel().getColumn(0).setPreferredWidth(10);
+//		table.getColumnModel().getColumn(0).setWidth(10);
+//		table.getColumnModel().getColumn(2).setPreferredWidth(10);
+//		table.getColumnModel().getColumn(2).setWidth(10);
+		table.getColumnModel().getColumn(1).setPreferredWidth(320);
+
 		table.setBackground(new Color(238, 238, 238));
 //		additionTable.setRowMargin(15);
 		table.setIntercellSpacing(new Dimension(10, 0));
@@ -148,11 +156,25 @@ public class ScorePanel extends JPanel {
 				setForeground(Color.BLACK);
 			}
 
-			if (column == 0 || column == 1) {
-				setHorizontalAlignment(SwingConstants.CENTER);
-			} else {
-				setHorizontalAlignment(SwingConstants.LEFT);
+			int alignment = 0;
+			switch (column) {
+			case 0:
+				alignment = SwingConstants.RIGHT;
+				break;
+			case 1:
+				alignment = SwingConstants.CENTER;
+				break;
+			case 2:
+				alignment = SwingConstants.LEFT;
+				break;
 			}
+			setHorizontalAlignment(alignment);
+
+//			if (column == 0 || column == 1) {
+//				setHorizontalAlignment(SwingConstants.CENTER);
+//			} else {
+//				setHorizontalAlignment(SwingConstants.LEFT);
+//			}
 
 //			if (isSelected) {
 //				setBackground(Color.YELLOW);

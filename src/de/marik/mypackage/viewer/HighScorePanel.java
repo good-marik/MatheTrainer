@@ -55,7 +55,7 @@ public class HighScorePanel extends JPanel {
 
 		JLabel title = new JLabel("Beste Ergebnisse");
 		title.setFont(new Font("arial", Font.BOLD, 18));
-		title.setForeground(Color.BLUE);
+//		title.setForeground(Color.BLUE);
 //		title.setHorizontalAlignment(SwingConstants.CENTER);
 
 		this.add(title, gbc);
@@ -108,16 +108,16 @@ public class HighScorePanel extends JPanel {
 	private void generateDefaultHighScoreTables(File file) {
 		// default Tables
 		String[][] additionTable = new String[][] { { "1", "Meister Yoda", "700" }, { "2", "Schlaufuchs", "350" },
-				{ "3", "Ehrgeiziger Nachbar", "200" }, { "4", "Глупыш", "70" } };
+				{ "3", "Ehrgeiziges Gespenst", "200" }, { "4", "Глупыш", "70" } };
 
 		String[][] substractionTable = new String[][] { { "1", "Meister Yoda", "800" }, { "2", "Schlaufuchs", "400" },
-				{ "3", "Ehrgeiziger Nachbar", "200" }, { "4", "Глупыш", "80" } };
+				{ "3", "Ehrgeiziges Gespenst", "200" }, { "4", "Глупыш", "80" } };
 
 		String[][] multiplicationTable = new String[][] { { "1", "Meister Yoda", "900" }, { "2", "Schlaufuchs", "450" },
-				{ "3", "Ehrgeiziger Nachbar", "250" }, { "4", "Глупыш", "90" } };
+				{ "3", "Ehrgeiziges Gespenst", "250" }, { "4", "Глупыш", "90" } };
 
 		String[][] divisionTable = new String[][] { { "1", "Meister Yoda", "900" }, { "2", "Schlaufuchs", "450" },
-				{ "3", "Ehrgeiziger Nachbar", "250" }, { "4", "Глупыш", "90" } };
+				{ "3", "Ehrgeiziges Gespenst", "250" }, { "4", "Глупыш", "90" } };
 
 		additionTableModel = new MyTableModel(additionTable, "Addition");
 		substractionTableModel = new MyTableModel(substractionTable, "Substraktion");
@@ -148,11 +148,11 @@ public class HighScorePanel extends JPanel {
 			divisionTableModel = (MyTableModel) in.readObject();
 		} catch (IOException e) {
 			System.out.println("I/O problem here!!!!!!!!!");
-			e.printStackTrace();
+//			e.printStackTrace();
 			return; 
 		} catch (ClassNotFoundException c) {
 			System.out.println("Expected TableModel is not found or damaged!");
-			c.printStackTrace();
+//			c.printStackTrace();
 			return;
 		}
 	}

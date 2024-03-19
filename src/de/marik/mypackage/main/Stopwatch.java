@@ -19,4 +19,12 @@ public class Stopwatch {
 			return 0;
 		}
 	}
+	
+	public double getSeconds() {
+		if(isRunning) {
+			return (System.nanoTime() - startTime) / 1e+9;
+		} else {
+			return 0;
+		}
+	}
 }

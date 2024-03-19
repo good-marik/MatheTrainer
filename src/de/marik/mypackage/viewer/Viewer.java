@@ -146,8 +146,14 @@ public class Viewer extends JFrame {
 		JOptionPane.showMessageDialog(null, new JLabel("Ein neuer Rekord!", JLabel.CENTER), "Gratulation!", JOptionPane.PLAIN_MESSAGE);
 	}
 	
+
+	private void toShowSuggestion() {
+		JLabel label = new JLabel("Versuch mal länger zu spielen :)", JLabel.CENTER);
+		JOptionPane.showMessageDialog(null, label, "Keine Punkte wurde gerechnet", JOptionPane.PLAIN_MESSAGE);
+	}
+	
 	private void toShowScore(int score) {
-		String text = "Deine Punkten: " + score;
+		String text = "Deine Punkte: " + score;
 //		JOptionPane.showMessageDialog(null, text, "", JOptionPane.PLAIN_MESSAGE);
 		JOptionPane.showMessageDialog(null, new JLabel(text, JLabel.CENTER), "", JOptionPane.PLAIN_MESSAGE);
 	}
@@ -194,8 +200,13 @@ public class Viewer extends JFrame {
 		cardLayout.last(multiPanel);
 	}
 
-	public void checkForRecord(Operation operation, int score) {
+	public void checkForRecord(Operation operation, int score, boolean isEnoughGames) {
 		switchPanel();
+		if (!isEnoughGames) {
+			toShowSuggestion();
+			return;
+		}
+		
 		if (highScorePanel.isANewRecord(operation, score)) {
 			toCongratulate();
 			highScorePanel.setNewRecord(score);
