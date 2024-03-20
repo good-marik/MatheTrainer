@@ -3,18 +3,18 @@ package de.marik.mypackage.main;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Multiplication extends Operation {
-	private int min = 0;
-	private int max = 10;
-	private int randomA;
-	private int randomB;
-	private String taskString;
+	private final int min = 0; // the lowest value of a factor
+	private final int max = 10; // the highest value of a factor
+	private int randomA; // factor A
+	private int randomB; // factor B
+	private String taskDescription;
 
 	public Multiplication() {
 		super("Multiplikation");
 	}
 
 	@Override
-	public int setTask() {
+	public int setTaskAndGetResult() {
 		randomA = ThreadLocalRandom.current().nextInt(min, max + 1);
 		randomB = ThreadLocalRandom.current().nextInt(min, max + 1);
 		return randomA * randomB;
@@ -33,9 +33,9 @@ public class Multiplication extends Operation {
 	}
 
 	@Override
-	public String getTaskString() {
-		taskString = randomA + " * " + randomB + " = ";
-		return taskString;
+	public String getTaskDescription() {
+		taskDescription = randomA + " * " + randomB + " = ";
+		return taskDescription;
 	}
 
 }

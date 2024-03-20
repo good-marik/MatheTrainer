@@ -1,19 +1,19 @@
 package de.marik.mypackage.main;
 
 public abstract class Operation {
-	final String name;
+	final String operationName;
 
-	protected Operation(String name) {
-		this.name = name;
+	protected Operation(String operationName) {
+		this.operationName = operationName;
 	}
 
-	public abstract int setTask();
+	public abstract int setTaskAndGetResult();
 
 	public abstract int getPoints();
 
-	public abstract String getTaskString();
+	public abstract String getTaskDescription();
 
-	public String getName() {
-		return name;
+	public String getOperationName() {
+		return operationName;
 	}
 }

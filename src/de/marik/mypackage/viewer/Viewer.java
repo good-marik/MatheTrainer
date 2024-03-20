@@ -23,7 +23,7 @@ import javax.swing.JTextField;
 import de.marik.mypackage.main.ICommentsDatabase;
 import de.marik.mypackage.main.IMyActionListener;
 import de.marik.mypackage.main.Operation;
-import de.marik.mypackage.main.PrimitiveCommentsDatabase;
+import de.marik.mypackage.main.CommentsPrimitiveDatabase;
 
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = 4225066973345513036L;
@@ -47,7 +47,7 @@ public class Viewer extends JFrame {
 
 	private Viewer() {
 		super(programTitle);
-		commentsDatabase = new PrimitiveCommentsDatabase();
+		commentsDatabase = new CommentsPrimitiveDatabase();
 		loadCommentsFromDatabase();
 		cardLayout = new CardLayout();
 		multiPanel = new JPanel(cardLayout);
@@ -138,7 +138,7 @@ public class Viewer extends JFrame {
 	}
 	
 	private void loadCommentsFromDatabase() {
-		positiveFeedbackList = commentsDatabase.getPositiveFeedback();
+		positiveFeedbackList = commentsDatabase.getPositiveFeedbackList();
 	}
 	
 	private void toCongratulate() {

@@ -3,32 +3,33 @@ package de.marik.mypackage.main;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Division extends Operation {
-	private int min = 1;
-	private int max = 10;
-	private int randomA;
-	private int randomB;
-	private int multiplied;
-	private String taskString;
-	
+	private final int min = 1; // the lowest value of a quotient/denominator
+	private final int max = 10; // the highest value of a quotient/denominator
+	// the task here is
+	// numerator : denominator = quotient
+	private int denominator;
+	private int quotient;
+	private int numerator;
+	private String taskDescription;
+
 	public Division() {
 		super("Division");
 	}
 
-	// task: multiplied / randomA = randomB
 	@Override
-	public int setTask() {
-		randomA = ThreadLocalRandom.current().nextInt(min, max + 1);
-		randomB = ThreadLocalRandom.current().nextInt(min, max + 1);
-		multiplied = randomA * randomB;
-		return randomB;
+	public int setTaskAndGetResult() {
+		denominator = ThreadLocalRandom.current().nextInt(min, max + 1);
+		quotient = ThreadLocalRandom.current().nextInt(min, max + 1);
+		numerator = denominator * quotient;
+		return quotient;
 	}
 
 	@Override
 	public int getPoints() {
-		if (randomA == 1 || randomB == 1 || randomA == 5 ) {
+		if (denominator == 1 || quotient == 1 || denominator == 5) {
 			return 10;
 		}
-		if ((randomA == 7 || randomA == 9) && randomB !=2 && randomB !=5) {
+		if ((denominator == 7 || denominator == 9) && quotient != 2 && quotient != 5) {
 			return 25;
 		}
 		// default
@@ -36,9 +37,9 @@ public class Division extends Operation {
 	}
 
 	@Override
-	public String getTaskString() {
-		taskString = multiplied + " : " + randomA + " = ";
-		return taskString;
+	public String getTaskDescription() {
+		taskDescription = numerator + " : " + denominator + " = ";
+		return taskDescription;
 	}
 
 }

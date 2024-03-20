@@ -1,5 +1,5 @@
 package de.marik.mypackage.main;
 
 public interface IMyActionListener {
-	void activate(int r);
+	void activate(int i);
 }

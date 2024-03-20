@@ -3,32 +3,34 @@ package de.marik.mypackage.main;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Substraction extends Operation {
-	private int min = 0;
-	private int max = 100;
-	private int randomA;
-	private int randomB;
-	private String taskString;
-	
+	private final int min = 0; // the lowest value of a term (minuend or substrahend)
+	private final int max = 100; // the highest value of a term (minuend or substrahend)
+	private int minuend;
+	private int substrahend;
+	// the task here is
+	// minuend - substrahend = difference
+	private String taskDescription;
+
 	public Substraction() {
 		super("Substraktion");
 	}
 
 	@Override
-	public int setTask() {
-		randomA = ThreadLocalRandom.current().nextInt(min, max + 1);
-		randomB = ThreadLocalRandom.current().nextInt(min, randomA + 1);
-		return randomA - randomB;
+	public int setTaskAndGetResult() {
+		minuend = ThreadLocalRandom.current().nextInt(min, max + 1);
+		substrahend = ThreadLocalRandom.current().nextInt(min, minuend + 1);
+		return minuend - substrahend;
 	}
 
 	@Override
 	public int getPoints() {
-		if (randomA <= 10 || randomA == randomB) {
+		if (minuend <= 10 || minuend == substrahend) {
 			return 10;
 		}
-		if (randomB <= 10) {
+		if (substrahend <= 10) {
 			return 20;
 		}
-		if (randomA % 10 < randomB % 10) {
+		if (minuend % 10 < substrahend % 10) {
 			return 40;
 		}
 		// default
@@ -36,9 +38,9 @@ public class Substraction extends Operation {
 	}
 
 	@Override
-	public String getTaskString() {
-		taskString = randomA + " – " + randomB + " = ";
-		return taskString;
+	public String getTaskDescription() {
+		taskDescription = minuend + " – " + substrahend + " = ";
+		return taskDescription;
 	}
 
 }

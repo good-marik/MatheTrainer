@@ -197,8 +197,8 @@ public class HighScorePanel extends JPanel {
 	}
 
 	private void setActiveTableModelAndScorePanel(Operation operation) {
-		System.out.println("current operation: " + operation.getName());
-		switch (operation.getName()) {
+		System.out.println("current operation: " + operation.getOperationName());
+		switch (operation.getOperationName()) {
 		case "Addition":
 			activeTableModel = additionTableModel;
 			activeScorePanel = additionPanel;

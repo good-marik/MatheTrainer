@@ -39,7 +39,7 @@ public class Controller {
 				
 				System.out.printf("%5.2f", duration);
 				System.out.print(" : ");
-				System.out.printf("%13s", currentOperation.getTaskString() + result);
+				System.out.printf("%13s", currentOperation.getTaskDescription() + result);
 //				int effectivePoints = (int) (currentOperation.getPoints() / duration);
 //				System.out.println(" :   " + currentOperation.getPoints() + " :   " + effectivePoints);
 				
@@ -135,8 +135,8 @@ public class Controller {
 	}
 	
 	public void playGame() {
-		result = currentOperation.setTask();
-		taskString = currentOperation.getTaskString();
+		result = currentOperation.setTaskAndGetResult();
+		taskString = currentOperation.getTaskDescription();
 		viewer.setTask(taskString);
 		localTimer.start();
 	}
