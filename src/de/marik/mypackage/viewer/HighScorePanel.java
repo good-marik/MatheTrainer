@@ -1,6 +1,5 @@
 package de.marik.mypackage.viewer;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -20,7 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import de.marik.mypackage.main.IMyActionListener;
+import de.marik.mypackage.main.Button;
+import de.marik.mypackage.main.IActionListenerForButtons;
 import de.marik.mypackage.main.Operation;
 
 public class HighScorePanel extends JPanel {
@@ -41,7 +41,7 @@ public class HighScorePanel extends JPanel {
 	private MyTableModel activeTableModel;
 
 	private JButton exitButton;
-	private IMyActionListener controllersListener;
+	private IActionListenerForButtons controllersListener;
 
 	HighScorePanel() {
 
@@ -87,7 +87,7 @@ public class HighScorePanel extends JPanel {
 //					activeTableModel.toPrint();
 					saveHighScoreTables(file);
 				}
-				controllersListener.activate(100);
+				controllersListener.activate(Button.MENU);
 			}
 		});
 		this.add(exitButton, gbc);
@@ -157,7 +157,7 @@ public class HighScorePanel extends JPanel {
 		}
 	}
 
-	public void setMyActionListener(IMyActionListener controllersListener) {
+	public void setMyActionListener(IActionListenerForButtons controllersListener) {
 		this.controllersListener = controllersListener;
 	}
 

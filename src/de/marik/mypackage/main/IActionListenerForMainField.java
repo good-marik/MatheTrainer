@@ -1,5 +1,6 @@
 package de.marik.mypackage.main;
 
-public interface IMyActionListener {
+public interface IActionListenerForMainField {
+
 	void activate(int i);
 }

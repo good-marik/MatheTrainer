@@ -10,19 +10,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import de.marik.mypackage.main.IMyActionListener;
+import de.marik.mypackage.main.Button;
+import de.marik.mypackage.main.IActionListenerForButtons;
 
 public class MenuPanel extends JPanel {
 
 	private static final long serialVersionUID = 4302685599041340611L;
-	private IMyActionListener controllersListener;
+	private IActionListenerForButtons controllersListener;
 
 	public MenuPanel() {
 		super();
 		init();
 	}
 
-	public void setMyActionListener(IMyActionListener controllersListener) {
+	public void setMyActionListener(IActionListenerForButtons controllersListener) {
 		this.controllersListener = controllersListener;
 	}
 
@@ -43,27 +44,27 @@ public class MenuPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == multiplicationButton) {
 					System.out.println("multiplication!");
-					controllersListener.activate(1);
+					controllersListener.activate(Button.MULTIPLICATION);
 				}
 				if (e.getSource() == additionButton) {
 					System.out.println("addition!");
-					controllersListener.activate(2);
+					controllersListener.activate(Button.ADDITION);
 				}
 				if (e.getSource() == divisionButton) {
 					System.out.println("division!");
-					controllersListener.activate(3);
+					controllersListener.activate(Button.DIVISION);
 				}
 				if (e.getSource() == substractionButton) {
 					System.out.println("substraction!");
-					controllersListener.activate(4);
+					controllersListener.activate(Button.SUBSTRACTION);
 				}
 				if (e.getSource() == highScoreButton) {
 					System.out.println("high score!");
-					controllersListener.activate(9);
+					controllersListener.activate(Button.HIGHSCORE);
 				}
 				if (e.getSource() == exitButton) {
 					System.out.println("exit!");
-					controllersListener.activate(10);
+					controllersListener.activate(Button.EXIT);
 				}
 			}
 		};

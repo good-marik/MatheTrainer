@@ -20,24 +20,30 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import de.marik.mypackage.main.ICommentsDatabase;
-import de.marik.mypackage.main.IMyActionListener;
-import de.marik.mypackage.main.Operation;
+import de.marik.mypackage.main.Button;
 import de.marik.mypackage.main.CommentsPrimitiveDatabase;
+import de.marik.mypackage.main.IActionListenerForButtons;
+import de.marik.mypackage.main.IActionListenerForMainField;
+import de.marik.mypackage.main.ICommentsDatabase;
+import de.marik.mypackage.main.Operation;
 
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = 4225066973345513036L;
 	private final static String version = "0.7";
 	private final static String programTitle = "MatheTrainer für Alexandra v" + version;
 	private final static String startingMessage = "Let's go!";
+	private final static String menuPanelString = "Menu";
+	private final static String gamePanelString = "Game";
+	private final static String HighScorePanelString = "HighScore";
+
 	private static Viewer viewer;
 	private JLabel comment;
 	private JLabel taskText;
 	private JButton exitButton;
 	private JButton doneButton;
 	private JTextField answerField;
-	private IMyActionListener actionListenerForField;
-	private IMyActionListener actionListenerForButtons;
+	private IActionListenerForMainField actionListenerForField;
+	private IActionListenerForButtons actionListenerForButtons;
 	private ICommentsDatabase commentsDatabase;
 	private ArrayList<String> positiveFeedbackList;
 	private CardLayout cardLayout;
@@ -52,11 +58,11 @@ public class Viewer extends JFrame {
 		cardLayout = new CardLayout();
 		multiPanel = new JPanel(cardLayout);
 		menuPanel = new MenuPanel();
-		multiPanel.add(menuPanel);
-		multiPanel.add(getGamePanel());
+		multiPanel.add(menuPanel, menuPanelString);
+		multiPanel.add(getGamePanel(), gamePanelString);
 		highScorePanel = new HighScorePanel();
-		multiPanel.add(highScorePanel);
-		
+		multiPanel.add(highScorePanel, HighScorePanelString);
+
 		add(multiPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = new Dimension(500, 350);
@@ -84,7 +90,7 @@ public class Viewer extends JFrame {
 		answerField.setFont(mainFont);
 		JLabel spacer = new JLabel(" ");
 		spacer.setFont(mainFont);
-		
+
 		doneButton = new JButton("eingabe");
 		doneButton.addActionListener(new ActionListener() {
 			@Override
@@ -102,10 +108,10 @@ public class Viewer extends JFrame {
 			}
 		});
 		getRootPane().setDefaultButton(doneButton);
-		
+
 		JPanel middlePanel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, 5, 0, 5);  // spaces (inserts) from left and right only
+		gbc.insets = new Insets(0, 5, 0, 5); // spaces (inserts) from left and right only
 		middlePanel.add(taskText, gbc);
 		middlePanel.add(answerField, gbc);
 		middlePanel.add(spacer, gbc);
@@ -116,8 +122,8 @@ public class Viewer extends JFrame {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				actionListenerForButtons.activate(50);
+
+				actionListenerForButtons.activate(Button.ENDOFGAME);
 
 //				toCongratulate();
 //				switchPanel();
@@ -128,7 +134,7 @@ public class Viewer extends JFrame {
 		JPanel bottomPanel = new JPanel(new GridBagLayout());
 		bottomPanel.add(exitButton);
 		gamePanel.add(bottomPanel);
-		
+
 		return gamePanel;
 	}
 
@@ -136,22 +142,22 @@ public class Viewer extends JFrame {
 		comment.setForeground(Color.BLUE);
 		comment.setText(startingMessage);
 	}
-	
+
 	private void loadCommentsFromDatabase() {
 		positiveFeedbackList = commentsDatabase.getPositiveFeedbackList();
 	}
-	
+
 	private void toCongratulate() {
 //		JOptionPane.showMessageDialog(null, "Ein neuer Rekord!", "Gratulation!", JOptionPane.INFORMATION_MESSAGE);
-		JOptionPane.showMessageDialog(null, new JLabel("Ein neuer Rekord!", JLabel.CENTER), "Gratulation!", JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(null, new JLabel("Ein neuer Rekord!", JLabel.CENTER), "Gratulation!",
+				JOptionPane.PLAIN_MESSAGE);
 	}
-	
 
 	private void toShowSuggestion() {
 		JLabel label = new JLabel("Versuch mal länger zu spielen :)", JLabel.CENTER);
 		JOptionPane.showMessageDialog(null, label, "Keine Punkte wurde gerechnet", JOptionPane.PLAIN_MESSAGE);
 	}
-	
+
 	private void toShowScore(int score) {
 		String text = "Deine Punkte: " + score;
 //		JOptionPane.showMessageDialog(null, text, "", JOptionPane.PLAIN_MESSAGE);
@@ -171,7 +177,8 @@ public class Viewer extends JFrame {
 		return viewer;
 	}
 
-	public void setMyActionListeners(IMyActionListener actionListenerForField, IMyActionListener actionListenerForButtons) {
+	public void setMyActionListeners(IActionListenerForMainField actionListenerForField,
+			IActionListenerForButtons actionListenerForButtons) {
 		this.actionListenerForField = actionListenerForField;
 		this.actionListenerForButtons = actionListenerForButtons;
 		menuPanel.setMyActionListener(actionListenerForButtons);
@@ -191,29 +198,31 @@ public class Viewer extends JFrame {
 		answerField.requestFocus();
 	}
 
-	public void switchPanel() {
-		setDefaultComment();
-		cardLayout.next(multiPanel);
-	}
-	
-	public void switchToHighScorePanel() {
-		cardLayout.last(multiPanel);
-	}
-
 	public void checkForRecord(Operation operation, int score, boolean isEnoughGames) {
-		switchPanel();
 		if (!isEnoughGames) {
 			toShowSuggestion();
 			return;
 		}
-		
+
 		if (highScorePanel.isANewRecord(operation, score)) {
 			toCongratulate();
 			highScorePanel.setNewRecord(score);
 		} else {
 			toShowScore(score);
 		}
-		
+
 	}
-	
+
+	public void switchToGame() {
+		setDefaultComment();
+		cardLayout.show(multiPanel, gamePanelString);
+	}
+
+	public void switchToMenu() {
+		cardLayout.show(multiPanel, menuPanelString);
+	}
+
+	public void switchToHighScore() {
+		cardLayout.show(multiPanel, HighScorePanelString);
+	}
 }
