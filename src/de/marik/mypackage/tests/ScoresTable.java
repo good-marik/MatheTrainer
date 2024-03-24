@@ -1,4 +1,4 @@
-package de.marik.mypackage.viewer;
+package de.marik.mypackage.tests;
 
 import java.io.Serializable;
 

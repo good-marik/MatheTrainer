@@ -3,27 +3,17 @@ package de.marik.mypackage.viewer;
 import javax.swing.table.DefaultTableModel;
 
 public class MyTableModel extends DefaultTableModel {
-
+	private static final long serialVersionUID = 3456248862367551347L;
+	private static final Object[] columnNames = new String[] { "Place", "Name", "Score" };
+	private final String title;
 	private boolean[][] editableCells;
-	private int rows;
-	private int columns;
-	private final static Object[] columnNames = new String[] { "Place", "Name", "Score" };
-	private String title;
 
 	MyTableModel(Object[][] cellValues, String title) {
 		super(cellValues, columnNames);
 		this.title = title;
-		rows = cellValues.length;
-		columns = columnNames.length;
+		int rows = cellValues.length;
+		int columns = cellValues[0].length;
 		editableCells = new boolean[rows][columns];
-
-//		 Debugging
-//		for (int i = 0; i < columnNames.length; i++) {
-//			for (int j = 0; j < cellValues.length; j++) {
-//				editableCells[j][i] = true;
-//			}
-//		}
-//		 Debugging
 	}
 
 	@Override
@@ -36,31 +26,8 @@ public class MyTableModel extends DefaultTableModel {
 		fireTableCellUpdated(row, column);
 	}
 
-//	public void setEntry(int position, String name, int score) {
-//		cellValues[position - 1][1] = name;
-//		cellValues[position - 1][2] = String.valueOf(score);
-//	}
-
 	public String getTitel() {
 		return title;
-	}
-
-//	public Operation getOperation() {
-//		return operation;
-//	}
-
-	public void toPrint() {
-		System.out.println("*");
-		int rows = getRowCount();
-		int columns = getColumnCount();
-		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < columns; j++) {
-				System.out.print(getValueAt(i, j) + ", ");
-			}
-			System.out.println();
-		}
-
-		System.out.println("*");
 	}
 
 }

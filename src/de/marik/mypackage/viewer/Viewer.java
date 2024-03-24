@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,155 +18,54 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import de.marik.mypackage.main.Button;
-import de.marik.mypackage.main.CommentsPrimitiveDatabase;
 import de.marik.mypackage.main.IActionListenerForButtons;
 import de.marik.mypackage.main.IActionListenerForMainField;
-import de.marik.mypackage.main.ICommentsDatabase;
 import de.marik.mypackage.main.Operation;
 
 public class Viewer extends JFrame {
-	private static final long serialVersionUID = 4225066973345513036L;
-	private final static String version = "0.7";
-	private final static String programTitle = "MatheTrainer für Alexandra v" + version;
-	private final static String startingMessage = "Let's go!";
-	private final static String menuPanelString = "Menu";
-	private final static String gamePanelString = "Game";
-	private final static String HighScorePanelString = "HighScore";
-
+	private static final long serialVersionUID = -5557289890702169461L;
+	private static final String version = "0.8";
+	private static final String programTitle = "MatheTrainer für Alexandra v" + version;
+	private final String menuPanelString = "Menu";
+	private final String gamePanelString = "Game";
+	private final String highScorePanelString = "HighScore";
+	private final String startingMessage = "Let's go!";
+	private final ArrayList<String> positiveFeedbackList;
+	private final CardLayout cardLayout;
+	private final JPanel multiPanel;
+	private final MenuPanel menuPanel;
+	private final HighScorePanel highScorePanel;
+	
 	private static Viewer viewer;
-	private JLabel comment;
-	private JLabel taskText;
-	private JButton exitButton;
-	private JButton doneButton;
-	private JTextField answerField;
 	private IActionListenerForMainField actionListenerForField;
 	private IActionListenerForButtons actionListenerForButtons;
-	private ICommentsDatabase commentsDatabase;
-	private ArrayList<String> positiveFeedbackList;
-	private CardLayout cardLayout;
-	private JPanel multiPanel;
-	private MenuPanel menuPanel;
-	private HighScorePanel highScorePanel;
+	private int lastCommentNumber;
+	private JLabel comment;
+	private JLabel taskText;
+	private JTextField answerField;
 
 	private Viewer() {
 		super(programTitle);
-		commentsDatabase = new CommentsPrimitiveDatabase();
-		loadCommentsFromDatabase();
+		positiveFeedbackList = new CommentsPrimitiveDatabase().getList();
+
+		menuPanel = new MenuPanel();
+		highScorePanel = new HighScorePanel();
 		cardLayout = new CardLayout();
 		multiPanel = new JPanel(cardLayout);
-		menuPanel = new MenuPanel();
 		multiPanel.add(menuPanel, menuPanelString);
 		multiPanel.add(getGamePanel(), gamePanelString);
-		highScorePanel = new HighScorePanel();
-		multiPanel.add(highScorePanel, HighScorePanelString);
+		multiPanel.add(highScorePanel, highScorePanelString);
+		this.add(multiPanel);
 
-		add(multiPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = new Dimension(500, 350);
 		setMinimumSize(dim);
-//		setSize(dim);
-//		setPreferredSize(dim);
 		pack();
 		setLocationRelativeTo(null);
 		setVisible(true);
-	}
-
-	private JPanel getGamePanel() {
-		JPanel gamePanel = new JPanel(new GridLayout(3, 1));
-		comment = new JLabel();
-		comment.setFont(new Font("arial", Font.BOLD, 28));
-		comment.setHorizontalAlignment(JLabel.CENTER);
-		setDefaultComment();
-		gamePanel.add(comment);
-
-		Font mainFont = new Font("arial", Font.PLAIN, 28);
-		taskText = new JLabel();
-//		taskText.setHorizontalAlignment(JLabel.CENTER);
-		taskText.setFont(mainFont);
-		answerField = new JTextField(3);
-		answerField.setFont(mainFont);
-		JLabel spacer = new JLabel(" ");
-		spacer.setFont(mainFont);
-
-		doneButton = new JButton("eingabe");
-		doneButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-//				System.out.println("ENTER pressed");
-				int answerInt = 0;
-				try {
-					answerInt = Integer.parseInt(answerField.getText());
-				} catch (Exception e2) {
-					answerField.setText("");
-					comment.setText("");
-					return;
-				}
-				actionListenerForField.activate(answerInt);
-			}
-		});
-		getRootPane().setDefaultButton(doneButton);
-
-		JPanel middlePanel = new JPanel(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, 5, 0, 5); // spaces (inserts) from left and right only
-		middlePanel.add(taskText, gbc);
-		middlePanel.add(answerField, gbc);
-		middlePanel.add(spacer, gbc);
-		middlePanel.add(doneButton, gbc);
-		gamePanel.add(middlePanel);
-
-		exitButton = new JButton("beenden");
-		exitButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				actionListenerForButtons.activate(Button.ENDOFGAME);
-
-//				toCongratulate();
-//				switchPanel();
-			}
-		});
-//		exitButton.setMaximumSize(new Dimension(55, 100));
-//		exitButton.setPreferredSize(new Dimension(55, 100));
-		JPanel bottomPanel = new JPanel(new GridBagLayout());
-		bottomPanel.add(exitButton);
-		gamePanel.add(bottomPanel);
-
-		return gamePanel;
-	}
-
-	private void setDefaultComment() {
-		comment.setForeground(Color.BLUE);
-		comment.setText(startingMessage);
-	}
-
-	private void loadCommentsFromDatabase() {
-		positiveFeedbackList = commentsDatabase.getPositiveFeedbackList();
-	}
-
-	private void toCongratulate() {
-//		JOptionPane.showMessageDialog(null, "Ein neuer Rekord!", "Gratulation!", JOptionPane.INFORMATION_MESSAGE);
-		JOptionPane.showMessageDialog(null, new JLabel("Ein neuer Rekord!", JLabel.CENTER), "Gratulation!",
-				JOptionPane.PLAIN_MESSAGE);
-	}
-
-	private void toShowSuggestion() {
-		JLabel label = new JLabel("Versuch mal länger zu spielen :)", JLabel.CENTER);
-		JOptionPane.showMessageDialog(null, label, "Keine Punkte wurde gerechnet", JOptionPane.PLAIN_MESSAGE);
-	}
-
-	private void toShowScore(int score) {
-		String text = "Deine Punkte: " + score;
-//		JOptionPane.showMessageDialog(null, text, "", JOptionPane.PLAIN_MESSAGE);
-		JOptionPane.showMessageDialog(null, new JLabel(text, JLabel.CENTER), "", JOptionPane.PLAIN_MESSAGE);
-	}
-
-	public void setTask(String taskString) {
-		taskText.setText(taskString);
-		answerField.setText("");
-		answerField.requestFocus();
 	}
 
 	public static Viewer getInstance() {
@@ -185,13 +83,22 @@ public class Viewer extends JFrame {
 		highScorePanel.setMyActionListener(actionListenerForButtons);
 	}
 
-	public void isCorrect(boolean correctAnswer, String errorMessage) {
-		if (correctAnswer) {
+	public void setTask(String taskString) {
+		taskText.setText(taskString);
+		answerField.setText("");
+		answerField.requestFocus();
+	}
+
+	public void isCorrect(boolean isCorrectAnswer, String errorMessage) {
+		if (isCorrectAnswer) {
 			comment.setForeground(new Color(0, 128, 0));
-			int randomCommentNumber = ThreadLocalRandom.current().nextInt(0, positiveFeedbackList.size());
+			int randomCommentNumber;
+			do {
+				randomCommentNumber = ThreadLocalRandom.current().nextInt(0, positiveFeedbackList.size());
+			} while (randomCommentNumber == lastCommentNumber);
 			comment.setText(positiveFeedbackList.get(randomCommentNumber));
 		} else {
-			comment.setForeground(new Color(204, 0, 0));
+			comment.setForeground(new Color(200, 0, 0));
 			comment.setText(errorMessage);
 		}
 		answerField.setText("");
@@ -200,17 +107,15 @@ public class Viewer extends JFrame {
 
 	public void checkForRecord(Operation operation, int score, boolean isEnoughGames) {
 		if (!isEnoughGames) {
-			toShowSuggestion();
+			showMessage("Keine Punkte wurde gerechnet", "Versuch mal länger zu spielen :)");
 			return;
 		}
-
 		if (highScorePanel.isANewRecord(operation, score)) {
-			toCongratulate();
+			showMessage("Gratulation!", "Ein neuer Rekord!");
 			highScorePanel.setNewRecord(score);
 		} else {
-			toShowScore(score);
+			showMessage("Nicht schlecht, aber ...", "Deine Punkte: " + score);
 		}
-
 	}
 
 	public void switchToGame() {
@@ -223,6 +128,73 @@ public class Viewer extends JFrame {
 	}
 
 	public void switchToHighScore() {
-		cardLayout.show(multiPanel, HighScorePanelString);
+		cardLayout.show(multiPanel, highScorePanelString);
 	}
+
+	private JPanel getGamePanel() {
+		JPanel gamePanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.insets = new Insets(20, 0, 20, 0);
+
+		comment = new JLabel();
+		comment.setFont(new Font("arial", Font.BOLD, 28));
+		setDefaultComment();
+		gamePanel.add(comment, gbc);
+
+		Font mainFont = new Font("arial", Font.PLAIN, 28);
+		taskText = new JLabel();
+		taskText.setFont(mainFont);
+		answerField = new JTextField(3);
+		answerField.setFont(mainFont);
+		JLabel spacer = new JLabel(" ");
+		spacer.setFont(mainFont);
+		JButton doneButton = new JButton("eingabe");
+		doneButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int answerInt = 0;
+				try {
+					answerInt = Integer.parseInt(answerField.getText());
+				} catch (Exception ex) {
+					// if not a proper integer
+					answerField.setText(""); // deleting input line
+					comment.setText(" "); // hiding comments
+					return;
+				}
+				actionListenerForField.activate(answerInt);
+			}
+		});
+		getRootPane().setDefaultButton(doneButton);
+		JPanel middlePanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc2 = new GridBagConstraints();
+		gbc2.insets = new Insets(0, 5, 0, 5); // spaces (margins, padding) from left and right only
+		middlePanel.add(taskText, gbc2);
+		middlePanel.add(answerField, gbc2);
+		middlePanel.add(spacer, gbc2);
+		middlePanel.add(doneButton, gbc2);
+		gamePanel.add(middlePanel, gbc);
+
+		JButton exitButton = new JButton("beenden");
+		exitButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionListenerForButtons.activate(Button.ENDOFGAME);
+			}
+		});
+		gamePanel.add(exitButton, gbc);
+
+		return gamePanel;
+	}
+
+	private void setDefaultComment() {
+		comment.setForeground(Color.BLUE);
+		comment.setText(startingMessage);
+	}
+
+	private void showMessage(String title, String message) {
+		JLabel label = new JLabel(message, SwingConstants.CENTER);
+		JOptionPane.showMessageDialog(this, label, title, JOptionPane.PLAIN_MESSAGE);
+	}
+
 }

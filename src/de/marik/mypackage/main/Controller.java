@@ -3,13 +3,14 @@ package de.marik.mypackage.main;
 import de.marik.mypackage.viewer.Viewer;
 
 public class Controller {
-	private static final int MinimumNumberOfRounds = 10;
+	private final int MinimumNumberOfRounds = 10;
+	private final Viewer viewer;
+	private final Addition addition;
+	private final Multiplication multiplication;
+	private final Division division;
+	private final Substraction substraction;
+	
 	private static Controller controller;
-	private Viewer viewer;
-	private Addition addition;
-	private Multiplication multiplication;
-	private Division division;
-	private Substraction substraction;
 	private Stopwatch globalTimer;
 	private int gameScore;
 	private int roundsCounter;

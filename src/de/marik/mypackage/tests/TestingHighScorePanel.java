@@ -1,9 +1,11 @@
-package de.marik.mypackage.viewer;
+package de.marik.mypackage.tests;
 
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+
+import de.marik.mypackage.viewer.HighScorePanel;
 
 public class TestingHighScorePanel extends JFrame {
 	private static final long serialVersionUID = -5917005205024021799L;

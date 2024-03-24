@@ -1,4 +1,4 @@
-package de.marik.mypackage.viewer;
+package de.marik.mypackage.tests;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -13,18 +13,11 @@ import javax.swing.JPanel;
 import de.marik.mypackage.main.Button;
 import de.marik.mypackage.main.IActionListenerForButtons;
 
-public class MenuPanel extends JPanel {
+public class MenuPanelOLD extends JPanel {
 	private static final long serialVersionUID = 4302685599041340611L;
-	private static final String add = "Addieren +";
-	private static final String substract = "Substrahieren –";
-	private static final String multiply = "Mutliplizieren *";
-	private static final String divide = "Dividieren :";
-	private static final String exit = "Program Beenden";
-	private static final String highScore = "Beste Ergebnisse";
-
 	private IActionListenerForButtons controllersListener;
 
-	public MenuPanel() {
+	public MenuPanelOLD() {
 		super();
 		init();
 	}
@@ -35,36 +28,34 @@ public class MenuPanel extends JPanel {
 
 	private void init() {
 		setLayout(new GridBagLayout());
-		JButton additionButton = new JButton(add);
-		JButton substractionButton = new JButton(substract);
-		JButton multiplicationButton = new JButton(multiply);
-		JButton divisionButton = new JButton(divide);
-		JButton highScoreButton = new JButton(highScore);
-		JButton exitButton = new JButton(exit);
+		JButton additionButton = new JButton("Addieren +");
+		JButton substractionButton = new JButton("Substrahieren –");
+		JButton multiplicationButton = new JButton("Mutliplizieren *");
+		JButton divisionButton = new JButton("Dividieren :");
+		JButton exitButton = new JButton("Program Beenden");
+		JButton highScoreButton = new JButton("Beste Ergebnisse");
 		exitButton.setForeground(new Color(0, 0, 153));
 
 		ActionListener menuListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				switch (e.getActionCommand()) {
-				case add:
-					controllersListener.activate(Button.ADDITION);
-					break;
-				case substract:
-					controllersListener.activate(Button.SUBSTRACTION);
-					break;
-				case multiply:
+				if (e.getSource() == multiplicationButton) {
 					controllersListener.activate(Button.MULTIPLICATION);
-					break;
-				case divide:
+				}
+				if (e.getSource() == additionButton) {
+					controllersListener.activate(Button.ADDITION);
+				}
+				if (e.getSource() == divisionButton) {
 					controllersListener.activate(Button.DIVISION);
-					break;
-				case highScore:
+				}
+				if (e.getSource() == substractionButton) {
+					controllersListener.activate(Button.SUBSTRACTION);
+				}
+				if (e.getSource() == highScoreButton) {
 					controllersListener.activate(Button.HIGHSCORE);
-					break;
-				case exit:
+				}
+				if (e.getSource() == exitButton) {
 					controllersListener.activate(Button.EXIT);
-					break;
 				}
 			}
 		};
@@ -73,16 +64,18 @@ public class MenuPanel extends JPanel {
 		substractionButton.addActionListener(menuListener);
 		multiplicationButton.addActionListener(menuListener);
 		divisionButton.addActionListener(menuListener);
-		highScoreButton.addActionListener(menuListener);
 		exitButton.addActionListener(menuListener);
+		highScoreButton.addActionListener(menuListener);
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(5, 5, 5, 5);
 		GridBagConstraints gbcSpecial = new GridBagConstraints();
-		gbcSpecial.insets = new Insets(25, 5, 5, 5);
-
+		//	gbcSpecial.gridwidth = GridBagConstraints.REMAINDER;
+		//	gbcSpecial.fill = GridBagConstraints.HORIZONTAL;
+		gbcSpecial.insets = new Insets(20, 5, 5, 5);
+		
 		add(additionButton, gbc);
 		add(substractionButton, gbc);
 		add(multiplicationButton, gbc);
