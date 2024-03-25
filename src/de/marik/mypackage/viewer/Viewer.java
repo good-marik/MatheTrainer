@@ -179,6 +179,7 @@ public class Viewer extends JFrame {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				//debugging
 				actionListenerForButtons.activate(Button.ENDOFGAME);
 			}
 		});
@@ -188,6 +189,8 @@ public class Viewer extends JFrame {
 	}
 
 	private void setDefaultComment() {
+		//debugging
+		System.out.println(this.getWidth() + " x " + this.getHeight());
 		comment.setForeground(Color.BLUE);
 		comment.setText(startingMessage);
 	}

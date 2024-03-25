@@ -27,19 +27,18 @@ public class HighScorePanel extends JPanel {
 	private static final long serialVersionUID = 6016203455657528034L;
 	private static final String filename = "scores";
 
-	private ScorePanel additionPanel;
-	private ScorePanel substractionPanel;
-	private ScorePanel multiplicationPanel;
-	private ScorePanel divisionPanel;
-	private ScorePanel activeScorePanel;
+	private final ScorePanel additionPanel;
+	private final ScorePanel substractionPanel;
+	private final ScorePanel multiplicationPanel;
+	private final ScorePanel divisionPanel;
 
+	private ScorePanel activeScorePanel;
 	private MyTableModel additionTableModel;
 	private MyTableModel substractionTableModel;
 	private MyTableModel multiplicationTableModel;
 	private MyTableModel divisionTableModel;
 	private MyTableModel activeTableModel;
 
-	private JButton exitButton;
 	private IActionListenerForButtons controllersListener;
 
 	public HighScorePanel() {
@@ -67,7 +66,7 @@ public class HighScorePanel extends JPanel {
 		tablePanel.add(divisionPanel);
 		this.add(tablePanel, gbc);
 
-		exitButton = new JButton("Menu");
+		JButton exitButton = new JButton("Menu");
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

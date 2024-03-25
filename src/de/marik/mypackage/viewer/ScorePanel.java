@@ -15,68 +15,45 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class ScorePanel extends JPanel {
+	private static final long serialVersionUID = -4887163524285865335L;
+	private static final Font captionFont = new Font("arial", Font.BOLD, 14);
+	private static final Font tableFont = new Font("arial", Font.PLAIN, 12);
+	private static final Font highlightedFont = new Font("arial", Font.BOLD, 12);
+	private static final int NOROW = 666;
+
 	private MyTableModel tableModel;
 	private JTable table;
-	private final static Font captionFont = new Font("arial", Font.BOLD, 14);
-	private final static Font tableFont = new Font("arial", Font.PLAIN, 12);
-	private final static Font highlightedFont = new Font("arial", Font.BOLD, 12);
-	private final static int NOROW = 666;
 	private int activeRow;
 
 	ScorePanel(MyTableModel tableModel) {
 		super();
 		this.tableModel = tableModel;
 		setLayout(new BorderLayout());
-
-		JLabel label = new JLabel(tableModel.getTitel());
+		JLabel label = new JLabel(tableModel.getTitel(), SwingConstants.CENTER);
 		label.setFont(captionFont);
-		label.setHorizontalAlignment(JLabel.CENTER);
 		label.setForeground(Color.BLUE);
-		add(label, BorderLayout.NORTH);
-
-		table = constructTable(tableModel);
-		add(table, BorderLayout.CENTER);
-//		System.out.println(getBackground().toString());
-//		System.out.println(getBackground().getRGB());
+		this.add(label, BorderLayout.NORTH);
+		table = getTable(tableModel);
+		this.add(table, BorderLayout.CENTER);
 	}
 
-	private JTable constructTable(MyTableModel tableModel) {
-		table = new JTable(tableModel);
+	private JTable getTable(MyTableModel tableModel) {
+		JTable table = new JTable(tableModel);
 		table.setCellSelectionEnabled(true);
 		table.setFocusable(true);
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-
-//		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
 		table.setRowHeight(20);
-//		table.getColumnModel().getColumn(0).setPreferredWidth(10);
-//		table.getColumnModel().getColumn(0).setWidth(10);
-//		table.getColumnModel().getColumn(2).setPreferredWidth(10);
-//		table.getColumnModel().getColumn(2).setWidth(10);
 		table.getColumnModel().getColumn(1).setPreferredWidth(320);
-
 		table.setBackground(new Color(238, 238, 238));
-//		additionTable.setRowMargin(15);
 		table.setIntercellSpacing(new Dimension(10, 0));
 		table.setShowGrid(false); // GRID!
 		table.setFont(tableFont);
-
-		activeRow = NOROW;
-
-//		DefaultTableCellRenderer centeringRenderer = new DefaultTableCellRenderer();
-//		centeringRenderer.setHorizontalAlignment(JLabel.CENTER);
-//		table.getColumnModel().getColumn(0).setCellRenderer(centeringRenderer);
-//		table.getColumnModel().getColumn(1).setCellRenderer(centeringRenderer);
-
 		table.setDefaultRenderer(Object.class, new MyCellRenderer());
-
-//		((DefaultCellEditor) table.getDefaultEditor(Object.class)).setClickCountToStart(1);
-
 		DefaultCellEditor myCellEditor = new MyCellEditor();
 		myCellEditor.setClickCountToStart(1);
 		table.setDefaultEditor(Object.class, myCellEditor);
+		activeRow = NOROW;
 //		table.requestFocus();
-
 		return table;
 	}
 
@@ -117,6 +94,8 @@ public class ScorePanel extends JPanel {
 	}
 
 	private class MyCellEditor extends DefaultCellEditor {
+		private static final long serialVersionUID = -2194532624303284544L;
+
 		public MyCellEditor() {
 			super(new JTextField());
 		}
@@ -138,6 +117,8 @@ public class ScorePanel extends JPanel {
 	}
 
 	private class MyCellRenderer extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 8875380934534437162L;
+
 		public MyCellRenderer() {
 			super();
 //			setOpaque(true);

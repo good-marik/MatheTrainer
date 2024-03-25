@@ -24,7 +24,7 @@ public class MenuPanel extends JPanel {
 
 	private IActionListenerForButtons controllersListener;
 
-	public MenuPanel() {
+	MenuPanel() {
 		super();
 		init();
 	}
