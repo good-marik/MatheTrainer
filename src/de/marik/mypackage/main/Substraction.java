@@ -3,12 +3,12 @@ package de.marik.mypackage.main;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Substraction extends Operation {
-	private final int min = 0; // the lowest value of a term (minuend or substrahend)
-	private final int max = 100; // the highest value of a term (minuend or substrahend)
-	private int minuend;
-	private int substrahend;
+	private static final int MIN = 0; // the lowest value of a term (minuend or substrahend)
+	private static final int MAX = 100; // the highest value of a term (minuend or substrahend)
 	// the task here is
 	// minuend - substrahend = difference
+	private int minuend;
+	private int substrahend;
 	private String taskDescription;
 
 	public Substraction() {
@@ -17,8 +17,9 @@ public class Substraction extends Operation {
 
 	@Override
 	public int setTaskAndGetResult() {
-		minuend = ThreadLocalRandom.current().nextInt(min, max + 1);
-		substrahend = ThreadLocalRandom.current().nextInt(min, minuend + 1);
+		minuend = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
+		substrahend = ThreadLocalRandom.current().nextInt(MIN, minuend + 1);
+		taskDescription = minuend + " – " + substrahend + " = ";
 		return minuend - substrahend;
 	}
 
@@ -39,7 +40,6 @@ public class Substraction extends Operation {
 
 	@Override
 	public String getTaskDescription() {
-		taskDescription = minuend + " – " + substrahend + " = ";
 		return taskDescription;
 	}
 

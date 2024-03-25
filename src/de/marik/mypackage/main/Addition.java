@@ -3,8 +3,9 @@ package de.marik.mypackage.main;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Addition extends Operation {
-	private final int min = 0; // the lowest value of a summand
-	private final int max = 100; // the highest value of a summand
+	private static final int MIN = 0; // the lowest value of a summand
+	private static final int MAX = 100; // the highest value of a summand
+
 	private int randomA; // summand A
 	private int randomB; // summand B
 	private String taskDescription;
@@ -15,8 +16,9 @@ public class Addition extends Operation {
 
 	@Override
 	public int setTaskAndGetResult() {
-		randomA = ThreadLocalRandom.current().nextInt(min, max + 1);
-		randomB = ThreadLocalRandom.current().nextInt(min, max - randomA + 1);
+		randomA = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
+		randomB = ThreadLocalRandom.current().nextInt(MIN, MAX - randomA + 1);
+		taskDescription = randomA + " + " + randomB + " = ";
 		return randomA + randomB;
 	}
 
@@ -34,7 +36,6 @@ public class Addition extends Operation {
 
 	@Override
 	public String getTaskDescription() {
-		taskDescription = randomA + " + " + randomB + " = ";
 		return taskDescription;
 	}
 

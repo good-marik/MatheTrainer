@@ -17,9 +17,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class ScorePanel extends JPanel {
 	private static final long serialVersionUID = -4887163524285865335L;
 	private static final Font captionFont = new Font("arial", Font.BOLD, 14);
-	private static final Font tableFont = new Font("arial", Font.PLAIN, 12);
-	private static final Font highlightedFont = new Font("arial", Font.BOLD, 12);
-	private static final int NOROW = 666;
+	private static final Font regularFont = new Font("arial", Font.PLAIN, 12);
+	private static final Font highlightingFont = new Font("arial", Font.BOLD, 12);
+	private static final int DUMMYROW = 666; // dummy highlighted row
 
 	private MyTableModel tableModel;
 	private JTable table;
@@ -37,60 +37,41 @@ public class ScorePanel extends JPanel {
 		this.add(table, BorderLayout.CENTER);
 	}
 
+	public void newRecord(int row) {
+		int column = 1;
+		table.setValueAt("", row, column);
+		tableModel.setCellEditable(row, column, true);
+		tableModel.fireTableCellUpdated(row, 0); // highlighting the position number
+		table.editCellAt(row, column);
+		table.requestFocus();
+		activeRow = row;
+	}
+
+	public void stopEditing() {
+		if (activeRow != DUMMYROW) {
+			tableModel.setCellEditable(activeRow, 1, false);
+			activeRow = DUMMYROW;
+		}
+	}
+
 	private JTable getTable(MyTableModel tableModel) {
 		JTable table = new JTable(tableModel);
 		table.setCellSelectionEnabled(true);
 		table.setFocusable(true);
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+		table.setBackground(new Color(238, 238, 238));
 		table.setRowHeight(20);
 		table.getColumnModel().getColumn(1).setPreferredWidth(320);
-		table.setBackground(new Color(238, 238, 238));
 		table.setIntercellSpacing(new Dimension(10, 0));
-		table.setShowGrid(false); // GRID!
-		table.setFont(tableFont);
+		table.setShowGrid(false); // show grid lines
+		table.setFont(regularFont);
 		table.setDefaultRenderer(Object.class, new MyCellRenderer());
 		DefaultCellEditor myCellEditor = new MyCellEditor();
 		myCellEditor.setClickCountToStart(1);
 		table.setDefaultEditor(Object.class, myCellEditor);
-		activeRow = NOROW;
+		activeRow = DUMMYROW;
 //		table.requestFocus();
 		return table;
-	}
-
-	public String newRecord(int row) {
-		int column = 1;
-		table.setValueAt("", row, column);
-		tableModel.setCellEditable(row, column, true); // temp agruments
-		table.setValueAt(table.getValueAt(row, 0), row, 0); // for re-drawing with other color
-		activeRow = row;
-		table.requestFocus();
-		table.editCellAt(row, column);
-
-//		tableModel.setCellEditable(row, column, false);
-//		System.out.println("already done?");
-
-//		ListSelectionModel rowSelection = table.getSelectionModel();
-//		int rowLead = rowSelection.getLeadSelectionIndex();
-//
-//		ListSelectionModel columnSelection = table.getColumnModel().getSelectionModel();
-//		int columnLead = columnSelection.getLeadSelectionIndex();
-//		
-//		System.out.println(rowLead + " " + columnLead);
-//		System.out.println(table.getEditingRow() + " " + table.getEditingColumn());
-
-		// TODO!
-		return null; // temp argument
-	}
-
-	public void stopEditing() {
-		if (activeRow != NOROW) {
-			// debugging
-//			System.out.println(tableModel.getValueAt(activeRow, 1).getClass());
-//			System.out.println("current name: " + tableModel.getValueAt(activeRow, 1));
-//			System.out.println(((String) tableModel.getValueAt(activeRow, 1)).isEmpty());
-			tableModel.setCellEditable(activeRow, 1, false);
-			activeRow = NOROW;
-		}
 	}
 
 	private class MyCellEditor extends DefaultCellEditor {
@@ -102,16 +83,11 @@ public class ScorePanel extends JPanel {
 
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
 				int column) {
-
 			JTextField textField = (JTextField) super.getTableCellEditorComponent(table, value, isSelected, row,
 					column);
-
-//		        textField.setText(value.toString());
-
-			textField.setFont(highlightedFont);
+			textField.setFont(highlightingFont);
 			textField.setForeground(Color.RED);
 			textField.setHorizontalAlignment(SwingConstants.CENTER);
-//		        System.out.println("entering name....");
 			return textField;
 		}
 	}
@@ -121,51 +97,33 @@ public class ScorePanel extends JPanel {
 
 		public MyCellRenderer() {
 			super();
-//			setOpaque(true);
 		}
 
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			setText(value.toString());
-			setFont(tableFont);
-
 			if (row == activeRow) {
-				setFont(highlightedFont);
+				setFont(highlightingFont);
 				setForeground(Color.RED);
 			} else {
-				setFont(tableFont);
+				setFont(regularFont);
 				setForeground(Color.BLACK);
 			}
-
-			int alignment = 0;
+			int alignmentCode = 0; // default: CENTER
 			switch (column) {
 			case 0:
-				alignment = SwingConstants.RIGHT;
+				alignmentCode = SwingConstants.RIGHT;
 				break;
 			case 1:
-				alignment = SwingConstants.CENTER;
+				alignmentCode = SwingConstants.CENTER;
 				break;
 			case 2:
-				alignment = SwingConstants.LEFT;
+				alignmentCode = SwingConstants.LEFT;
 				break;
 			}
-			setHorizontalAlignment(alignment);
-
-//			if (column == 0 || column == 1) {
-//				setHorizontalAlignment(SwingConstants.CENTER);
-//			} else {
-//				setHorizontalAlignment(SwingConstants.LEFT);
-//			}
-
-//			if (isSelected) {
-//				setBackground(Color.YELLOW);
-//			} else {
-//				setBackground(Color.LIGHT_GRAY);
-//			}
-
+			setHorizontalAlignment(alignmentCode);
 			return this;
 		}
-
 	}
 
 }

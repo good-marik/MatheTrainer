@@ -15,12 +15,12 @@ import de.marik.mypackage.main.IActionListenerForButtons;
 
 public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 4302685599041340611L;
-	private static final String add = "Addieren +";
-	private static final String substract = "Substrahieren –";
-	private static final String multiply = "Mutliplizieren *";
-	private static final String divide = "Dividieren :";
-	private static final String exit = "Program Beenden";
-	private static final String highScore = "Beste Ergebnisse";
+	private static final String ADD = "Addieren +";
+	private static final String SUBSTRACT = "Substrahieren –";
+	private static final String MULTIPLY = "Mutliplizieren *";
+	private static final String DIVIDE = "Dividieren :";
+	private static final String EXIT = "Program Beenden";
+	private static final String HIGHSCORE = "Beste Ergebnisse";
 
 	private IActionListenerForButtons controllersListener;
 
@@ -35,34 +35,34 @@ public class MenuPanel extends JPanel {
 
 	private void init() {
 		setLayout(new GridBagLayout());
-		JButton additionButton = new JButton(add);
-		JButton substractionButton = new JButton(substract);
-		JButton multiplicationButton = new JButton(multiply);
-		JButton divisionButton = new JButton(divide);
-		JButton highScoreButton = new JButton(highScore);
-		JButton exitButton = new JButton(exit);
+		JButton additionButton = new JButton(ADD);
+		JButton substractionButton = new JButton(SUBSTRACT);
+		JButton multiplicationButton = new JButton(MULTIPLY);
+		JButton divisionButton = new JButton(DIVIDE);
+		JButton highScoreButton = new JButton(HIGHSCORE);
+		JButton exitButton = new JButton(EXIT);
 		exitButton.setForeground(new Color(0, 0, 153));
 
 		ActionListener menuListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				switch (e.getActionCommand()) {
-				case add:
+				case ADD:
 					controllersListener.activate(Button.ADDITION);
 					break;
-				case substract:
+				case SUBSTRACT:
 					controllersListener.activate(Button.SUBSTRACTION);
 					break;
-				case multiply:
+				case MULTIPLY:
 					controllersListener.activate(Button.MULTIPLICATION);
 					break;
-				case divide:
+				case DIVIDE:
 					controllersListener.activate(Button.DIVISION);
 					break;
-				case highScore:
+				case HIGHSCORE:
 					controllersListener.activate(Button.HIGHSCORE);
 					break;
-				case exit:
+				case EXIT:
 					controllersListener.activate(Button.EXIT);
 					break;
 				}

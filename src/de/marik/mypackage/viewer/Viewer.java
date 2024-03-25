@@ -27,8 +27,8 @@ import de.marik.mypackage.main.Operation;
 
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = -5557289890702169461L;
-	private static final String version = "0.8";
-	private static final String programTitle = "MatheTrainer für Alexandra v" + version;
+	private static final String VERSION = "0.9";
+	private static final String PROGRAMTITLE = "MatheTrainer für Alexandra v" + VERSION;
 	private final String menuPanelString = "Menu";
 	private final String gamePanelString = "Game";
 	private final String highScorePanelString = "HighScore";
@@ -38,7 +38,7 @@ public class Viewer extends JFrame {
 	private final JPanel multiPanel;
 	private final MenuPanel menuPanel;
 	private final HighScorePanel highScorePanel;
-	
+
 	private static Viewer viewer;
 	private IActionListenerForMainField actionListenerForField;
 	private IActionListenerForButtons actionListenerForButtons;
@@ -48,7 +48,7 @@ public class Viewer extends JFrame {
 	private JTextField answerField;
 
 	private Viewer() {
-		super(programTitle);
+		super(PROGRAMTITLE);
 		positiveFeedbackList = new CommentsPrimitiveDatabase().getList();
 
 		menuPanel = new MenuPanel();
@@ -179,7 +179,7 @@ public class Viewer extends JFrame {
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//debugging
+				// debugging
 				actionListenerForButtons.activate(Button.ENDOFGAME);
 			}
 		});
@@ -189,8 +189,7 @@ public class Viewer extends JFrame {
 	}
 
 	private void setDefaultComment() {
-		//debugging
-		System.out.println(this.getWidth() + " x " + this.getHeight());
+//		System.out.println(this.getWidth() + " x " + this.getHeight());
 		comment.setForeground(Color.BLUE);
 		comment.setText(startingMessage);
 	}

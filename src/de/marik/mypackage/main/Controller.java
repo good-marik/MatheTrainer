@@ -3,19 +3,20 @@ package de.marik.mypackage.main;
 import de.marik.mypackage.viewer.Viewer;
 
 public class Controller {
-	private final int MinimumNumberOfRounds = 10;
+	private static final int MinimumNumberOfRounds = 10; // to adjust
 	private final Viewer viewer;
 	private final Addition addition;
 	private final Multiplication multiplication;
 	private final Division division;
 	private final Substraction substraction;
-	
+
 	private static Controller controller;
 	private Stopwatch globalTimer;
 	private int gameScore;
 	private int roundsCounter;
 	private Operation currentOperation;
 	private int currentAnswer;
+	private int lastAnswer = -1; // any task for the first round is accepted
 	private Stopwatch localTimer; // for debugging
 
 	private Controller(Viewer viewer) {
@@ -50,8 +51,6 @@ public class Controller {
 				System.out.printf(": %2d ", currentOperation.getPoints());
 				System.out.printf("-> %2d : ", calculateTimeDependentScore(currentOperation.getPoints()));
 				System.out.printf("total time: %6.2f%n", globalTimer.getSeconds());
-//				int effectivePoints = (int) (currentOperation.getPoints() / duration);
-//				System.out.println(" :   " + currentOperation.getPoints() + " :   " + effectivePoints);
 
 				if (resultToCheck == currentAnswer) {
 					viewer.isCorrect(true, "");
@@ -126,6 +125,11 @@ public class Controller {
 
 	private void startNewRound() {
 		currentAnswer = currentOperation.setTaskAndGetResult();
+		// to avoid repeating and similar tasks in a row
+		while (currentAnswer == lastAnswer) {
+			currentAnswer = currentOperation.setTaskAndGetResult();
+		}
+		lastAnswer = currentAnswer;
 		viewer.setTask(currentOperation.getTaskDescription());
 		localTimer.start(); // for debugging
 	}
@@ -161,7 +165,6 @@ public class Controller {
 		System.out.println("score: " + score);
 		System.out.println(time + " seconds");
 		System.out.println("normallized score: " + normScore);
-		System.out.println("--------------");
 		return normScore;
 	}
 

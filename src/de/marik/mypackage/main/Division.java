@@ -3,8 +3,8 @@ package de.marik.mypackage.main;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Division extends Operation {
-	private final int min = 1; // the lowest value of a quotient/denominator
-	private final int max = 10; // the highest value of a quotient/denominator
+	private static final int MIN = 1; // the lowest value of a quotient/denominator
+	private static final int MAX = 10; // the highest value of a quotient/denominator
 	// the task here is
 	// numerator : denominator = quotient
 	private int denominator;
@@ -18,9 +18,10 @@ public class Division extends Operation {
 
 	@Override
 	public int setTaskAndGetResult() {
-		denominator = ThreadLocalRandom.current().nextInt(min, max + 1);
-		quotient = ThreadLocalRandom.current().nextInt(min, max + 1);
+		denominator = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
+		quotient = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
 		numerator = denominator * quotient;
+		taskDescription = numerator + " : " + denominator + " = ";
 		return quotient;
 	}
 
@@ -38,7 +39,6 @@ public class Division extends Operation {
 
 	@Override
 	public String getTaskDescription() {
-		taskDescription = numerator + " : " + denominator + " = ";
 		return taskDescription;
 	}
 
