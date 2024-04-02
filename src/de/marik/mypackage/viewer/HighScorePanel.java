@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -25,7 +27,7 @@ import de.marik.mypackage.main.Operation;
 
 public class HighScorePanel extends JPanel {
 	private static final long serialVersionUID = 6016203455657528034L;
-	private static final String filename = "scores";
+	private static final String filename = "config";
 
 	private final ScorePanel additionPanel;
 	private final ScorePanel substractionPanel;
@@ -89,7 +91,7 @@ public class HighScorePanel extends JPanel {
 		int lastRow = activeTableModel.getRowCount() - 1;
 		int tableScore = Integer.parseInt((String) activeTableModel.getValueAt(lastRow, 2));
 		// debugging
-		System.out.println("---------------checking for a new record----------------------------");
+		System.out.println("---------------checking for a new record---------------");
 		System.out.println("tableScore: " + tableScore);
 		System.out.println("my score: " + score);
 		System.out.println("a new record? - " + (score > tableScore));
@@ -124,6 +126,15 @@ public class HighScorePanel extends JPanel {
 			readHighScoreTablesFromFile(file);
 		} else {
 			generateDefaultHighScoreTables(file);
+//			try {
+//				Path path = file.toPath();
+//				System.out.println("is file hidden? " + file.isHidden());
+//				Files.setAttribute(path, "dos:hidden", true);
+//				System.out.println("is file hidden? " + file.isHidden());
+//			} catch (IOException e) {
+//				System.out.println("I/O-problem!");
+//				e.printStackTrace();
+//			}
 		}
 	}
 
@@ -143,7 +154,8 @@ public class HighScorePanel extends JPanel {
 		multiplicationTableModel = new MyTableModel(multiplicationTable, "Multiplikation");
 		divisionTableModel = new MyTableModel(divisionTable, "Division");
 		// debugging: do not delete method saveHighScoreTables()!
-		System.out.println("saving file is accomplished? : " + saveHighScoreTables(file));
+//		System.out.println("saving file is accomplished? : " + saveHighScoreTables(file));
+		saveHighScoreTables(file);
 	}
 
 	private void readHighScoreTablesFromFile(File file) {
@@ -161,17 +173,28 @@ public class HighScorePanel extends JPanel {
 		}
 	}
 
-	private boolean saveHighScoreTables(File file) {
+	private boolean setFileHidden(File file, boolean isHidden) {
+		Path path = file.toPath();
+		try {
+			Files.setAttribute(path, "dos:hidden", isHidden);
+		} catch (IOException e) {
+			System.out.println("Cannot hide/unhide the scores file");
+			return false;
+		}
+		return true;
+	}
+
+	private void saveHighScoreTables(File file) {
+		setFileHidden(file, false);
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file))) {
 			out.writeObject(additionTableModel);
 			out.writeObject(substractionTableModel);
 			out.writeObject(multiplicationTableModel);
 			out.writeObject(divisionTableModel);
-			return true;
 		} catch (IOException e) {
-			System.out.println("Problems with saving High Score Tables!!!");
-			return false;
+			System.out.println("Problem with saving High Score Tables");
 		}
+		setFileHidden(file, true);
 	}
 
 	private void setActiveTableModelAndScorePanel(Operation operation) {

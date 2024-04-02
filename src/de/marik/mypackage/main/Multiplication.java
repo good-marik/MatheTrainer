@@ -18,7 +18,7 @@ public class Multiplication extends Operation {
 	public int setTaskAndGetResult() {
 		randomA = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
 		randomB = ThreadLocalRandom.current().nextInt(MIN, MAX + 1);
-		taskDescription = randomA + " * " + randomB + " = ";
+		taskDescription = randomA + " • " + randomB + " = ";
 		return randomA * randomB;
 	}
 

@@ -17,7 +17,7 @@ public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 4302685599041340611L;
 	private static final String ADD = "Addieren +";
 	private static final String SUBSTRACT = "Substrahieren –";
-	private static final String MULTIPLY = "Mutliplizieren *";
+	private static final String MULTIPLY = "Mutliplizieren •";
 	private static final String DIVIDE = "Dividieren :";
 	private static final String EXIT = "Program Beenden";
 	private static final String HIGHSCORE = "Beste Ergebnisse";
