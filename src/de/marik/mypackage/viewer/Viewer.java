@@ -27,7 +27,7 @@ import de.marik.mypackage.main.Operation;
 
 public class Viewer extends JFrame {
 	private static final long serialVersionUID = -5557289890702169461L;
-	private static final String VERSION = "1.1";
+	private static final String VERSION = "1.2";
 	private static final String PROGRAMTITLE = "MatheTrainer für Alexandra v" + VERSION;
 	private final String menuPanelString = "Menu";
 	private final String gamePanelString = "Game";
