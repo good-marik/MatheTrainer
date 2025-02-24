@@ -3,7 +3,7 @@ package de.marik.mypackage.main;
 import de.marik.mypackage.viewer.Viewer;
 
 public class Controller {
-	private static final int MinimumNumberOfRounds = 10; // to adjust
+	private static final int MinimumNumberOfRounds = 10; // minimum number of tasks to be scored
 	private final Viewer viewer;
 	private final Addition addition;
 	private final Multiplication multiplication;

@@ -25,13 +25,12 @@ public class Addition extends Operation {
 	@Override
 	public int getPoints() {
 		if ((randomA <= 10 || randomB <= 10) && ((randomA % 10 + randomB % 10) <= 10)) {
-			return 15;
+			return 15; // easy task
 		}
 		if ((randomA % 10 + randomB % 10) > 10) {
-			return 25;
+			return 25; // difficult task
 		}
-		// default
-		return 22;
+		return 22; // normal task
 	}
 
 	@Override

@@ -189,7 +189,6 @@ public class Viewer extends JFrame {
 	}
 
 	private void setDefaultComment() {
-//		System.out.println(this.getWidth() + " x " + this.getHeight());
 		comment.setForeground(Color.BLUE);
 		comment.setText(startingMessage);
 	}
