@@ -8,7 +8,7 @@ public class MyTableModel extends DefaultTableModel {
 	private final String title;
 	private boolean[][] editableCells;
 
-	MyTableModel(Object[][] cellValues, String title) {
+	public MyTableModel(Object[][] cellValues, String title) {
 		super(cellValues, columnNames);
 		this.title = title;
 		int rows = cellValues.length;

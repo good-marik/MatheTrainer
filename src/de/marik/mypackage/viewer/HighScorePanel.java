@@ -43,7 +43,7 @@ public class HighScorePanel extends JPanel {
 
 	private IActionListenerForButtons controllersListener;
 
-	public HighScorePanel() {
+	HighScorePanel() {
 		File file = new File(filename);
 		loadHighScoreTables(file);
 
@@ -122,19 +122,11 @@ public class HighScorePanel extends JPanel {
 	private void loadHighScoreTables(File file) {
 		// debugging
 		System.out.println(filename + " exists? - " + file.isFile());
+		
 		if (file.isFile()) {
 			readHighScoreTablesFromFile(file);
 		} else {
 			generateDefaultHighScoreTables(file);
-//			try {
-//				Path path = file.toPath();
-//				System.out.println("is file hidden? " + file.isHidden());
-//				Files.setAttribute(path, "dos:hidden", true);
-//				System.out.println("is file hidden? " + file.isHidden());
-//			} catch (IOException e) {
-//				System.out.println("I/O-problem!");
-//				e.printStackTrace();
-//			}
 		}
 	}
 
@@ -154,7 +146,7 @@ public class HighScorePanel extends JPanel {
 		multiplicationTableModel = new MyTableModel(multiplicationTable, "Multiplikation");
 		divisionTableModel = new MyTableModel(divisionTable, "Division");
 		// debugging: do not delete method saveHighScoreTables()!
-//		System.out.println("saving file is accomplished? : " + saveHighScoreTables(file));
+		// System.out.println("saving file is accomplished? : " + saveHighScoreTables(file));
 		saveHighScoreTables(file);
 	}
 
